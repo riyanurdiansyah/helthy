@@ -13,4 +13,17 @@ class AuthController extends GetxController {
       this.user.value = user;
     });
   }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      user.value = null;
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to logout: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 } 

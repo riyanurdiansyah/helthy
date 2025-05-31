@@ -1,0 +1,56 @@
+{
+  /** ------------ Workbench Settings ------------ **/
+  "workbench.colorCustomizations": {
+    "inlineparameters.annotationBackground": "#282A3600",
+    "inlineparameters.annotationForeground": "#7b82af",
+    "scrollbar.shadow": "#24292e00"
+  },
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [
+      80
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off",
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "explorer.confirmDelete": false,
+  "editor.formatOnSave": true,
+  "workbench.iconTheme": "vscode-jetbrains-icon-theme-2023-dark",
+  "workbench.productIconTheme": "fluent-icons",
+  "workbench.editorLargeFileConfirmation": 10024,
+  "workbench.layoutControl.enabled": false,
+  "workbench.tree.indent": 12,
+  "workbench.editor.empty.hint": "hidden",
+  /** ------------ Breadcrumbs Configurations ------------ **/
+  "breadcrumbs.enabled": true,
+  "breadcrumbs.symbolPath": "off",
+  "breadcrumbs.filePath": "on",
+  /** ------------ Editor Settings ------------ **/
+  "editor.fontFamily": "'Fira Code Retina', 'Hack Nerd Font', Monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 12.5,
+  "editor.fontWeight": 450,
+  "editor.lineHeight": 22,
+  "editor.lineNumbers": "on",
+  "editor.folding": true,
+  "editor.glyphMargin": true,
+  "editor.guides.indentation": false,
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.cursorStyle": "underline",
+  "editor.minimap.enabled": false,
+  "editor.wordWrap": "on",
+  "editor.stickyScroll.enabled": true,
+  "vscode_custom_css.imports": [
+    "file:///Users/nur/.vscode/vscode-custom/style.css",
+    "file:///Users/nur/.vscode/vscode-custom/script.js"
+  ]
+}

@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../routes/app_pages.dart';
+import 'package:helthy/utils/prefs.dart';
 
 class SplashController extends GetxController {
   final RxBool isLoading = true.obs;
 
   @override
   void onInit() {
+    log("MASUK");
     super.onInit();
     checkSession();
   }
@@ -14,16 +16,15 @@ class SplashController extends GetxController {
   Future<void> checkSession() async {
     try {
       await Future.delayed(const Duration(seconds: 2));
-      final prefs = await SharedPreferences.getInstance();
-      final hasSession = prefs.getBool('hasSession') ?? false;
-      
+      final hasSession = SharedPrefs().getBool('hasSession') ?? false;
+
       if (hasSession) {
-        Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed("/dashboard");
       } else {
-        Get.offAllNamed(Routes.LOGIN);
+        Get.offAllNamed("/login");
       }
     } finally {
       isLoading.value = false;
     }
   }
-} 
+}

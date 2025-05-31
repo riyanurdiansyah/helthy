@@ -1,8 +1,9 @@
 part of 'app_pages.dart';
 
-abstract class Routes {
+class AppRouteName {
   static const SPLASH = '/splash';
   static const LOGIN = '/login';
   static const REQUEST = '/request';
   static const HOME = '/home';
-} 
+  static const DASHBOARD = '/dashboard';
+}

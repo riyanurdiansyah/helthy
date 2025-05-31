@@ -1,31 +1,44 @@
 import 'package:get/get.dart';
-import '../views/splash/splash_view.dart';
-import '../views/splash/splash_binding.dart';
-import '../views/login/login_view.dart';
-import '../views/login/login_binding.dart';
-import '../views/home/home_view.dart';
-import '../views/home/home_binding.dart';
+import 'package:helthy/views/dashboard/dashboard_binding.dart';
+import 'package:helthy/views/dashboard/dashboard_view.dart';
+import 'package:helthy/views/home/home_view.dart';
+import 'package:helthy/views/login_view.dart';
+import 'package:helthy/views/request/request_view.dart';
+import 'package:helthy/views/splash_view.dart';
 
-part 'app_routes.dart';
+import '../bindings/login_binding.dart';
+import '../bindings/splash_binding.dart';
+import '../views/home/home_binding.dart';
+import '../views/request/request_binding.dart';
 
 class AppPages {
-  static const INITIAL = Routes.SPLASH;
+  static const initial = '/splash';
 
   static final routes = [
     GetPage(
-      name: Routes.SPLASH,
+      name: '/splash',
       page: () => const SplashView(),
       binding: SplashBinding(),
     ),
     GetPage(
-      name: Routes.LOGIN,
+      name: '/home',
+      page: () => const HomeView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: '/request',
+      page: () => const RequestView(),
+      binding: RequestBinding(),
+    ),
+    GetPage(
+      name: '/login',
       page: () => const LoginView(),
       binding: LoginBinding(),
     ),
     GetPage(
-      name: Routes.HOME,
-      page: () => const HomeView(),
-      binding: HomeBinding(),
+      name: '/dashboard',
+      page: () => const DashboardView(),
+      binding: DashboardBinding(),
     ),
   ];
-} 
+}

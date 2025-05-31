@@ -1,17 +1,16 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../routes/app_pages.dart';
 
 class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final RxBool isLoading = false.obs;
   final RxBool isPasswordVisible = false.obs;
   final RxBool isFirebaseInitialized = false.obs;
-  
+
   // Form validation
   final RxString emailError = ''.obs;
   final RxString passwordError = ''.obs;
@@ -37,7 +36,7 @@ class LoginController extends GetxController {
 
       // Try to get current user to verify auth is working
       // final currentUser = _auth.currentUser;
-      
+
       // Listen to auth state changes to verify the channel is working
       _auth.authStateChanges().listen((User? user) {
         // This is just to verify the channel is working
@@ -109,27 +108,28 @@ class LoginController extends GetxController {
       return;
     }
 
-    if (!validateEmail(emailController.text) || 
+    if (!validateEmail(emailController.text) ||
         !validatePassword(passwordController.text)) {
       return;
     }
 
     try {
       isLoading.value = true;
-      
+
       // Sign in with Firebase
-      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text,
-      );
+      final UserCredential userCredential = await _auth
+          .signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text,
+          );
 
       if (userCredential.user != null) {
         // Save login state
         final prefs = await _prefs;
         await prefs.setBool('hasSession', true);
-        
+
         // Navigate to home
-        Get.offAllNamed(Routes.HOME);
+        // Get.offAllNamed(Routes.HOME);
       }
     } on FirebaseAuthException catch (e) {
       String message;
@@ -147,7 +147,7 @@ class LoginController extends GetxController {
           message = 'This user account has been disabled.';
           break;
         default:
-        log("ERROR $e");
+          log("ERROR $e");
           message = '$e';
       }
       Get.snackbar(
@@ -169,4 +169,4 @@ class LoginController extends GetxController {
       isLoading.value = false;
     }
   }
-} 
+}

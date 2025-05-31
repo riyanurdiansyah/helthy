@@ -53,6 +53,41 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Roboto-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto-Thin.ttf
+          weight: 100
+    - family: Calibri
+      fonts:
+        - asset: assets/fonts/Calibri-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Calibri-Regular.ttf
+          weight: 400
+    - family: Helvetica
+      fonts:
+        - asset: assets/fonts/Helvetica-Neue-Black.otf
+          weight: 900
+        - asset: assets/fonts/Helvetica-Neue-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Helvetica-Neue-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Helvetica-Neue-Regular.otf
+          weight: 400
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
