@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "140424544275",
+    "project_id": "helthy-a2c57",
+    "storage_bucket": "helthy-a2c57.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140424544275:android:85c1ef709e72e61f4d3fe6",
+        "android_client_info": {
+          "package_name": "com.example.husui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140424544275:android:565df16b97d3848b4d3fe6",
+        "android_client_info": {
+          "package_name": "com.healthy.app.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140424544275:android:7eba0b919358d13a4d3fe6",
+        "android_client_info": {
+          "package_name": "com.helthy.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
