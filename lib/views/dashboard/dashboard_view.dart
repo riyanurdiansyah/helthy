@@ -30,7 +30,7 @@ class DashboardView extends GetView<DashboardController> {
           color: Colors.grey.shade200,
         ),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () => Get.toNamed("/request"),
           elevation: 0,
           backgroundColor: ColorStyles.genoa,
           shape: RoundedRectangleBorder(

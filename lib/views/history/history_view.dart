@@ -23,42 +23,62 @@ class HistoryView extends GetView<HistoryController> {
             style: Roboto700.copyWith(fontSize: 24, color: ColorStyles.genoa),
           ),
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
         ),
         body: Column(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: Container(
-                height: 45,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Colors.grey.shade300,
-                ),
-                child: TabBar(
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  dividerColor: Colors.transparent,
-                  indicator: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+            Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              color: Colors.white,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                child: Container(
+                  height: 45,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.grey.shade200,
                   ),
-                  labelColor: Colors.black,
-                  padding: const EdgeInsets.all(2.5),
-                  unselectedLabelColor: Colors.grey.shade500,
-                  labelStyle: Roboto700.copyWith(
-                    fontSize: 12.5,
-                    color: ColorStyles.genoa,
+                  child: Obx(
+                    () => TabBar(
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      dividerColor: Colors.transparent,
+                      indicator: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      labelColor: Colors.black,
+                      padding: const EdgeInsets.all(2.5),
+                      unselectedLabelColor: Colors.grey.shade500,
+                      labelStyle: Roboto700.copyWith(
+                        fontSize: 12.5,
+                        color: ColorStyles.genoa,
+                      ),
+                      unselectedLabelStyle: Roboto700.copyWith(
+                        fontSize: 12.5,
+                        color: Colors.black,
+                      ),
+                      tabs: [
+                        TabItem(title: "All (${controller.requests.length})"),
+                        TabItem(
+                          title:
+                              "Approved (${controller.requests.where((request) {
+                                if (request.approvals.isEmpty) return false;
+                                final sortedApprovals = [...request.approvals]..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+                                return sortedApprovals.last.status.toLowerCase() == 'approved';
+                              }).toList().length})",
+                        ),
+                        TabItem(
+                          title:
+                              "Rejected  (${controller.requests.where((request) {
+                                if (request.approvals.isEmpty) return false;
+                                final sortedApprovals = [...request.approvals]..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+                                return sortedApprovals.last.status.toLowerCase() == 'rejected';
+                              }).toList().length})",
+                        ),
+                      ],
+                    ),
                   ),
-                  unselectedLabelStyle: Roboto700.copyWith(
-                    fontSize: 12.5,
-                    color: Colors.black,
-                  ),
-                  tabs: [
-                    TabItem(title: "All"),
-                    TabItem(title: "Approved"),
-                    TabItem(title: "Rejected"),
-                  ],
                 ),
               ),
             ),
@@ -67,7 +87,29 @@ class HistoryView extends GetView<HistoryController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: TabBarView(
-                  children: [TabAll(), const SizedBox(), const SizedBox()],
+                  children: [
+                    TabAll(requests: controller.requests),
+                    TabAll(
+                      requests:
+                          controller.requests.where((request) {
+                            if (request.approvals.isEmpty) return false;
+                            final sortedApprovals = [...request.approvals]
+                              ..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+                            return sortedApprovals.last.status.toLowerCase() ==
+                                'approved';
+                          }).toList(),
+                    ),
+                    TabAll(
+                      requests:
+                          controller.requests.where((request) {
+                            if (request.approvals.isEmpty) return false;
+                            final sortedApprovals = [...request.approvals]
+                              ..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+                            return sortedApprovals.last.status.toLowerCase() ==
+                                'rejected';
+                          }).toList(),
+                    ),
+                  ],
                 ),
               ),
             ),

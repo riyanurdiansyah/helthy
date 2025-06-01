@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/request_controller.dart';
+import 'package:helthy/controllers/request_controller.dart';
+import 'package:helthy/styles/color_styles.dart';
+import 'package:helthy/styles/text_styles.dart';
+import 'package:helthy/views/request/item_section_request_builder.dart';
+import 'package:helthy/widgets/confirmation_dialog.dart';
 
 class RequestView extends GetView<RequestController> {
   const RequestView({super.key});
@@ -8,212 +12,140 @@ class RequestView extends GetView<RequestController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('New Request'),
-        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            if (controller.step.value == 1) {
+              Get.back();
+            } else {
+              controller.step.value = controller.step.value - 1;
+              controller.autoScrollController.scrollToIndex(
+                controller.step.value - 1,
+              );
+              controller.pageController?.jumpToPage(controller.step.value - 1);
+            }
+          },
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              if (controller.isBasicInfoValid.value ||
+                  controller.step.value > 1) {
+                if (controller.step.value < controller.listPage.length) {
+                  controller.step(controller.step.value + 1);
+                  controller.autoScrollController.scrollToIndex(
+                    controller.step.value,
+                  );
+                  controller.pageController?.jumpToPage(
+                    controller.step.value - 1,
+                  );
+                } else {
+                  Get.dialog(
+                    ConfirmationDialog(
+                      title: 'Create a New Request',
+                      leftButtonText: 'Back',
+                      rightButtonText: 'Save',
+                      rightButtonAction: () {
+                        Get.back();
+                        controller.submitRequest();
+                      },
+                      content: Text(
+                        'Are you sure want to save?',
+                        textAlign: TextAlign.center,
+                        style: Calibri400.copyWith(
+                          fontSize: 14,
+                          color: ColorStyles.disableBold,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              }
+            },
+            child: Obx(
+              () => Container(
+                width: 50,
+                height: 40,
+                margin: EdgeInsets.only(right: 10),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color:
+                      controller.step.value == controller.listSection.length ||
+                              (controller.step.value == 1 &&
+                                  controller.isBasicInfoValid.value) ||
+                              controller.step.value > 1
+                          ? ColorStyles.atlantis100
+                          : ColorStyles.disableLight,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child:
+                    controller.step.value != controller.listSection.length
+                        ? Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 18,
+                          color:
+                              controller.step.value ==
+                                          controller.listSection.length ||
+                                      (controller.step.value == 1 &&
+                                          controller.isBasicInfoValid.value) ||
+                                      controller.step.value > 1
+                                  ? Colors.white
+                                  : ColorStyles.disableBold,
+                        )
+                        : Icon(
+                          Icons.save_outlined,
+                          size: 24,
+                          color: Colors.white,
+                        ),
+              ),
+            ),
+          ),
+        ],
+        title: Text(
+          'Request',
+          textAlign: TextAlign.center,
+          style: Roboto700.copyWith(fontSize: 24, color: ColorStyles.white),
+        ),
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: ColorStyles.genoa,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildFormCard(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFormCard() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTitleField(),
-            const SizedBox(height: 16),
-            _buildDescriptionField(),
-            const SizedBox(height: 16),
-            _buildTypeDropdown(),
-            const SizedBox(height: 16),
-            _buildPriorityDropdown(),
-            const SizedBox(height: 24),
-            _buildSubmitButton(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTitleField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Title',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          onChanged: (value) => controller.title.value = value,
-          decoration: InputDecoration(
-            hintText: 'Enter request title',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDescriptionField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Description',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          onChanged: (value) => controller.description.value = value,
-          maxLines: 4,
-          decoration: InputDecoration(
-            hintText: 'Enter request description',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            contentPadding: const EdgeInsets.all(16),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTypeDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Request Type',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Obx(() => Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: controller.selectedType.value.isEmpty
-                  ? null
-                  : controller.selectedType.value,
-              isExpanded: true,
-              hint: const Text('Select request type'),
-              items: controller.requestTypes.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 48,
+            color: Colors.white,
+            child: ListView.builder(
+              controller: controller.autoScrollController,
+              scrollDirection: Axis.horizontal,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: controller.listSection.length,
+              itemBuilder: (context, index) {
+                return Obx(
+                  () => ItemSectionRequestBuilder(
+                    controller: controller,
+                    index: index,
+                    step: controller.step.value,
+                    itemSection: controller.listSection[index],
+                  ),
                 );
-              }).toList(),
-              onChanged: (String? value) {
-                if (value != null) {
-                  controller.selectedType.value = value;
-                }
               },
             ),
           ),
-        )),
-      ],
-    );
-  }
-
-  Widget _buildPriorityDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Priority Level',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Obx(() => Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: controller.selectedPriority.value.isEmpty
-                  ? null
-                  : controller.selectedPriority.value,
-              isExpanded: true,
-              hint: const Text('Select priority level'),
-              items: controller.priorityLevels.map((String priority) {
-                return DropdownMenuItem<String>(
-                  value: priority,
-                  child: Text(priority),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                if (value != null) {
-                  controller.selectedPriority.value = value;
-                }
+          Expanded(
+            child: PageView.builder(
+              controller: controller.pageController,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: controller.listPage.length,
+              itemBuilder: (context, index) {
+                return controller.listPage[index];
               },
             ),
           ),
-        )),
-      ],
-    );
-  }
-
-  Widget _buildSubmitButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: controller.submitRequest,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.deepPurple,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: const Text(
-          'Submit Request',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        ],
       ),
     );
   }
-} 
+}

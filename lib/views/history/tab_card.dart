@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:helthy/extensions/app_extension.dart';
+import 'package:helthy/models/instalasi_form_m.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
+import 'package:intl/intl.dart';
 
 class TabCard extends StatelessWidget {
-  const TabCard({super.key, this.ontap});
+  const TabCard({super.key, this.ontap, required this.data});
 
   final Function()? ontap;
+  final InstalasiFormM data;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class TabCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: Colors.grey.shade400),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
@@ -29,26 +32,50 @@ class TabCard extends StatelessWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 4,
+                      vertical: 6,
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      color: Colors.amber.shade200,
+                      color:
+                          data.approvals.isEmpty
+                              ? Colors.grey.shade300
+                              : (data.approvals..sort(
+                                        (a, b) =>
+                                            a.tanggal.compareTo(b.tanggal),
+                                      ))
+                                      .last
+                                      .status ==
+                                  "Rejected"
+                              ? Colors.red
+                              : Colors.green,
                     ),
                     child: Text(
-                      'History',
+                      data.approvals.isEmpty
+                          ? "Submitted"
+                          : (data.approvals..sort(
+                                (a, b) => a.tanggal.compareTo(b.tanggal),
+                              ))
+                              .last
+                              .status,
                       textAlign: TextAlign.center,
                       style: Calibri700.copyWith(
                         fontSize: 12.5,
-                        color: ColorStyles.disable,
+                        color:
+                            data.approvals.isEmpty
+                                ? Colors.grey.shade600
+                                : ColorStyles.white,
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 0.0),
                     child: Text(
-                      'Wed, 6 Dec 2025',
+                      data.tanggalPengajuan == null
+                          ? "-"
+                          : DateFormat(
+                            "E, d MMM yyyy",
+                          ).format(data.tanggalPengajuan!.toDate()),
                       textAlign: TextAlign.center,
                       style: Calibri700.copyWith(
                         fontSize: 12.5,
@@ -66,19 +93,19 @@ class TabCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Wed, 6 Dec 2025',
+                        data.noDokumen,
                         textAlign: TextAlign.center,
                         style: Calibri700.copyWith(
                           fontSize: 16.5,
                           color: ColorStyles.black,
                         ),
                       ),
-
+                      4.ph,
                       Text(
-                        'Permintaan Instalasi',
+                        data.type,
                         textAlign: TextAlign.center,
                         style: Calibri700.copyWith(
-                          fontSize: 16.5,
+                          fontSize: 12.5,
                           color: ColorStyles.atlantis100,
                         ),
                       ),

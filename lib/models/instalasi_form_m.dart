@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helthy/models/approval_m.dart';
 import 'package:helthy/models/item_m.dart';
 
@@ -5,10 +6,10 @@ class InstalasiFormM {
   final String id;
   final String type;
   final String noDokumen;
-  final DateTime tanggal;
+  final Timestamp? tanggal;
   final int noRevisi;
   final String namaLab;
-  final DateTime tanggalPengajuan;
+  final Timestamp? tanggalPengajuan;
   final String alamat;
   final String alat;
   final String noTelepon;
@@ -20,14 +21,15 @@ class InstalasiFormM {
   final String businessRepresentivePerson;
   final String technicalSupport;
   final String fieldServiceEngineer;
-  final DateTime tanggalPermintaanPemasangan;
-  final DateTime tanggalPemasangan;
-  final DateTime tanggalTraining;
+  final Timestamp? tanggalPermintaanPemasangan;
+  final Timestamp? tanggalPemasangan;
+  final Timestamp? tanggalTraining;
   final String catatan;
   final String praInstalasi;
-  final DateTime dtCreated;
-  final DateTime dtUpdated;
+  final Timestamp dtCreated;
+  final Timestamp dtUpdated;
   final List<ItemM> items;
+  final List<ItemM> accesories;
   final List<ApprovalM> approvals;
 
   InstalasiFormM({
@@ -57,50 +59,55 @@ class InstalasiFormM {
     required this.dtCreated,
     required this.dtUpdated,
     required this.items,
+    required this.accesories,
     required this.approvals,
   });
-
   factory InstalasiFormM.fromJson(Map<String, dynamic> json) => InstalasiFormM(
-    id: json['id'],
-    type: json['type'],
-    noDokumen: json['noDokumen'],
-    tanggal: DateTime.parse(json['tanggal']),
-    noRevisi: json['noRevisi'],
-    namaLab: json['namaLab'],
-    tanggalPengajuan: DateTime.parse(json['tanggalPengajuan']),
-    alamat: json['alamat'],
-    alat: json['alat'],
-    noTelepon: json['noTelepon'],
-    merk: json['merk'],
-    namaKepalaLab: json['namaKepalaLab'],
-    serialNumber: json['serialNumber'],
-    penanggungJawabAlat: json['penanggungJawabAlat'],
-    noInvoice: json['noInvoice'],
-    businessRepresentivePerson: json['businessRepresentivePerson'],
-    technicalSupport: json['technicalSupport'],
-    fieldServiceEngineer: json['fieldServiceEngineer'],
-    tanggalPermintaanPemasangan: DateTime.parse(
-      json['tanggalPermintaanPemasangan'],
-    ),
-    tanggalPemasangan: DateTime.parse(json['tanggalPemasangan']),
-    tanggalTraining: DateTime.parse(json['tanggalTraining']),
-    catatan: json['catatan'],
-    praInstalasi: json['praInstalasi'],
-    dtCreated: DateTime.parse(json['dtCreated']),
-    dtUpdated: DateTime.parse(json['dtUpdated']),
-    items: (json['items'] as List).map((e) => ItemM.fromJson(e)).toList(),
+    id: json['id'] ?? '',
+    type: json['type'] ?? '',
+    noDokumen: json['noDokumen'] ?? '',
+    tanggal: json['tanggal'],
+    noRevisi: json['noRevisi'] ?? 0,
+    namaLab: json['namaLab'] ?? '',
+    tanggalPengajuan: json['tanggalPengajuan'],
+    alamat: json['alamat'] ?? '',
+    alat: json['alat'] ?? '',
+    noTelepon: json['noTelepon'] ?? '',
+    merk: json['merk'] ?? '',
+    namaKepalaLab: json['namaKepalaLab'] ?? '',
+    serialNumber: json['serialNumber'] ?? '',
+    penanggungJawabAlat: json['penanggungJawabAlat'] ?? '',
+    noInvoice: json['noInvoice'] ?? '',
+    businessRepresentivePerson: json['businessRepresentivePerson'] ?? '',
+    technicalSupport: json['technicalSupport'] ?? '',
+    fieldServiceEngineer: json['fieldServiceEngineer'] ?? '',
+    tanggalPermintaanPemasangan: json['tanggalPermintaanPemasangan'],
+    tanggalPemasangan: json['tanggalPemasangan'],
+    tanggalTraining: json['tanggalTraining'],
+    catatan: json['catatan'] ?? '',
+    praInstalasi: json['praInstalasi'] ?? '',
+    dtCreated: json['dtCreated'],
+    dtUpdated: json['dtUpdated'],
+    items:
+        (json['items'] as List?)?.map((e) => ItemM.fromJson(e)).toList() ?? [],
+    accesories:
+        (json['accesories'] as List?)?.map((e) => ItemM.fromJson(e)).toList() ??
+        [],
     approvals:
-        (json['approvals'] as List).map((e) => ApprovalM.fromJson(e)).toList(),
+        (json['approvals'] as List?)
+            ?.map((e) => ApprovalM.fromJson(e))
+            .toList() ??
+        [],
   );
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'type': type,
     'noDokumen': noDokumen,
-    'tanggal': tanggal.toIso8601String(),
+    'tanggal': tanggal,
     'noRevisi': noRevisi,
     'namaLab': namaLab,
-    'tanggalPengajuan': tanggalPengajuan.toIso8601String(),
+    'tanggalPengajuan': tanggalPengajuan,
     'alamat': alamat,
     'alat': alat,
     'noTelepon': noTelepon,
@@ -112,15 +119,15 @@ class InstalasiFormM {
     'businessRepresentivePerson': businessRepresentivePerson,
     'technicalSupport': technicalSupport,
     'fieldServiceEngineer': fieldServiceEngineer,
-    'tanggalPermintaanPemasangan':
-        tanggalPermintaanPemasangan.toIso8601String(),
-    'tanggalPemasangan': tanggalPemasangan.toIso8601String(),
-    'tanggalTraining': tanggalTraining.toIso8601String(),
+    'tanggalPermintaanPemasangan': tanggalPermintaanPemasangan,
+    'tanggalPemasangan': tanggalPemasangan,
+    'tanggalTraining': tanggalTraining,
     'catatan': catatan,
     'praInstalasi': praInstalasi,
-    'dtCreated': dtCreated.toIso8601String(),
-    'dtUpdated': dtUpdated.toIso8601String(),
+    'dtCreated': dtCreated,
+    'dtUpdated': dtUpdated,
     'items': items.map((e) => e.toJson()).toList(),
+    'accesories': accesories.map((e) => e.toJson()).toList(),
     'approvals': approvals.map((e) => e.toJson()).toList(),
   };
 }
