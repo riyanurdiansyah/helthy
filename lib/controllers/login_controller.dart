@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helthy/models/profile_m.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
@@ -124,12 +127,33 @@ class LoginController extends GetxController {
           );
 
       if (userCredential.user != null) {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        final user =
+            await firestore
+                .collection("users")
+                .where("email", isEqualTo: userCredential.user!.email)
+                .limit(1)
+                .get();
+        if (user.docs.isEmpty) {
+          Get.snackbar(
+            "Error",
+            "Login is failed.. user is not registered",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+          return;
+        }
         // Save login state
         final prefs = await _prefs;
+        await prefs.setString(
+          "profile",
+          json.encode(ProfileM.fromJson(user.docs.first.data()).toJson()),
+        );
         await prefs.setBool('hasSession', true);
 
         // Navigate to home
-        // Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed("/dashboard");
       }
     } on FirebaseAuthException catch (e) {
       String message;
@@ -160,7 +184,7 @@ class LoginController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'An unexpected error occurred. Please try again.',
+        'An unexpected error occurred. Please try again. $e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

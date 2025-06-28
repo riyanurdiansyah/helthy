@@ -3,39 +3,43 @@ import 'package:helthy/models/approval_m.dart';
 import 'package:helthy/models/item_m.dart';
 
 class InstalasiFormM {
-  final String id;
-  final String type;
-  final String noDokumen;
-  final Timestamp? tanggal;
-  final int noRevisi;
-  final String namaLab;
-  final Timestamp? tanggalPengajuan;
-  final String alamat;
-  final String alat;
-  final String noTelepon;
-  final String merk;
-  final String namaKepalaLab;
-  final String serialNumber;
-  final String penanggungJawabAlat;
-  final String noInvoice;
-  final String businessRepresentivePerson;
-  final String technicalSupport;
-  final String fieldServiceEngineer;
-  final Timestamp? tanggalPermintaanPemasangan;
-  final Timestamp? tanggalPemasangan;
-  final Timestamp? tanggalTraining;
-  final String catatan;
-  final String praInstalasi;
-  final Timestamp dtCreated;
-  final Timestamp dtUpdated;
-  final List<ItemM> items;
-  final List<ItemM> accesories;
-  final List<ApprovalM> approvals;
+  String id;
+  String type;
+  String noDokumen;
+  String createdBy;
+  String nextApproval;
+  Timestamp? tanggal;
+  int noRevisi;
+  String namaLab;
+  Timestamp? tanggalPengajuan;
+  String alamat;
+  String alat;
+  String noTelepon;
+  String merk;
+  String namaKepalaLab;
+  String serialNumber;
+  String penanggungJawabAlat;
+  String noInvoice;
+  String businessRepresentivePerson;
+  String technicalSupport;
+  String fieldServiceEngineer;
+  Timestamp? tanggalPermintaanPemasangan;
+  Timestamp? tanggalPemasangan;
+  Timestamp? tanggalTraining;
+  String catatan;
+  String praInstalasi;
+  Timestamp dtCreated;
+  Timestamp dtUpdated;
+  List<ItemM> items;
+  List<ItemM> accesories;
+  List<ApprovalM> approvals;
 
   InstalasiFormM({
     required this.id,
     required this.type,
     required this.noDokumen,
+    required this.createdBy,
+    required this.nextApproval,
     required this.tanggal,
     required this.noRevisi,
     required this.namaLab,
@@ -65,7 +69,9 @@ class InstalasiFormM {
   factory InstalasiFormM.fromJson(Map<String, dynamic> json) => InstalasiFormM(
     id: json['id'] ?? '',
     type: json['type'] ?? '',
+    nextApproval: json['nextApproval'] ?? '',
     noDokumen: json['noDokumen'] ?? '',
+    createdBy: json['createdBy'] ?? '',
     tanggal: json['tanggal'],
     noRevisi: json['noRevisi'] ?? 0,
     namaLab: json['namaLab'] ?? '',
@@ -104,6 +110,7 @@ class InstalasiFormM {
     'id': id,
     'type': type,
     'noDokumen': noDokumen,
+    'createdBy': createdBy,
     'tanggal': tanggal,
     'noRevisi': noRevisi,
     'namaLab': namaLab,

@@ -44,7 +44,10 @@ class RequestView extends GetView<RequestController> {
                 } else {
                   Get.dialog(
                     ConfirmationDialog(
-                      title: 'Create a New Request',
+                      title:
+                          controller.oldRequest.value != null
+                              ? 'Update a Request'
+                              : 'Create a new request Instalasi',
                       leftButtonText: 'Back',
                       rightButtonText: 'Save',
                       rightButtonAction: () {
@@ -103,10 +106,12 @@ class RequestView extends GetView<RequestController> {
             ),
           ),
         ],
-        title: Text(
-          'Request',
-          textAlign: TextAlign.center,
-          style: Roboto700.copyWith(fontSize: 24, color: ColorStyles.white),
+        title: Obx(
+          () => Text(
+            controller.oldRequest.value != null ? 'Edit Request' : 'Request',
+            textAlign: TextAlign.center,
+            style: Roboto700.copyWith(fontSize: 24, color: ColorStyles.white),
+          ),
         ),
         elevation: 0,
         backgroundColor: ColorStyles.genoa,

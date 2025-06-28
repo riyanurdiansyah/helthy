@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helthy/styles/color_styles.dart';
 
 class AppDialog {
   static Future<DateTime?> datePicker({
@@ -19,6 +20,28 @@ class AppDialog {
       selectableDayPredicate: (DateTime date) {
         return true;
       },
+    );
+  }
+
+  static showSuccessMessage(String msg) {
+    return Get.snackbar(
+      'Success',
+      msg,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: ColorStyles.genoa,
+      margin: const EdgeInsets.all(14),
+      colorText: Colors.white,
+    );
+  }
+
+  static showErrorMessage(String msg) {
+    return Get.snackbar(
+      'Error',
+      msg,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: ColorStyles.danger,
+      margin: const EdgeInsets.all(14),
+      colorText: Colors.white,
     );
   }
 }

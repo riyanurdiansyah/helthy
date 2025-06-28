@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
+import 'package:helthy/utils/prefs.dart';
 import 'package:helthy/widgets/confirmation_dialog.dart';
 
 import '../controllers/auth_controller.dart';
@@ -83,7 +84,9 @@ class HomeController extends GetxController {
   Future<void> logout() async {
     try {
       await _auth.signOut();
+      SharedPrefs().clear();
       Get.find<AuthController>().user.value = null;
+      Get.offAllNamed("/login");
     } catch (e) {
       Get.snackbar(
         'Error',

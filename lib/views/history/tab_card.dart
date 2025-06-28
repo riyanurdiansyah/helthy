@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:helthy/controllers/history_controller.dart';
 import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/models/instalasi_form_m.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
 import 'package:intl/intl.dart';
 
-class TabCard extends StatelessWidget {
-  const TabCard({super.key, this.ontap, required this.data});
+import '../../widgets/outlined_primary_button.dart';
+import '../../widgets/primary_button.dart';
+
+class TabCard extends GetView<HistoryController> {
+  const TabCard({super.key, this.ontap, required this.data, this.constStatus});
 
   final Function()? ontap;
   final InstalasiFormM data;
+  final String? constStatus;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
-        onTap: () {},
+        onTap: ontap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade400),
+            border: Border.all(color: Colors.grey.shade200),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
@@ -37,34 +43,34 @@ class TabCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      color:
-                          data.approvals.isEmpty
-                              ? Colors.grey.shade300
-                              : (data.approvals..sort(
-                                        (a, b) =>
-                                            a.tanggal.compareTo(b.tanggal),
-                                      ))
-                                      .last
-                                      .status ==
-                                  "Rejected"
-                              ? Colors.red
-                              : Colors.green,
+                      border: Border.all(
+                        width: 1,
+                        color:
+                            constStatus != null
+                                ? Colors.grey
+                                : data.approvals.isEmpty
+                                ? Colors.grey.shade500
+                                : data.approvals.last.status == "REJECTED"
+                                ? Colors.red
+                                : Colors.green,
+                      ),
                     ),
                     child: Text(
-                      data.approvals.isEmpty
-                          ? "Submitted"
-                          : (data.approvals..sort(
-                                (a, b) => a.tanggal.compareTo(b.tanggal),
-                              ))
-                              .last
-                              .status,
+                      constStatus ??
+                          (data.approvals.isEmpty
+                              ? "Submitted by"
+                              : data.approvals.last.status),
                       textAlign: TextAlign.center,
                       style: Calibri700.copyWith(
                         fontSize: 12.5,
                         color:
-                            data.approvals.isEmpty
-                                ? Colors.grey.shade600
-                                : ColorStyles.white,
+                            constStatus != null
+                                ? Colors.grey
+                                : data.approvals.isEmpty
+                                ? Colors.grey.shade500
+                                : data.approvals.last.status == "REJECTED"
+                                ? Colors.red
+                                : Colors.green,
                       ),
                     ),
                   ),
@@ -85,7 +91,7 @@ class TabCard extends StatelessWidget {
                   ),
                 ],
               ),
-              8.ph,
+              14.ph,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -121,6 +127,76 @@ class TabCard extends StatelessWidget {
                   ),
                 ],
               ),
+              if (data.approvals.last.status == "REJECTED") 16.ph,
+
+              if (data.approvals.last.status == "REJECTED")
+                Row(
+                  children: [
+                    Expanded(
+                      child: PrimaryButton(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 4,
+                        ),
+                        backgroundColor: ColorStyles.genoa,
+                        text: "Revise",
+                        borderRadius: 6,
+                        textStyle: Calibri700.copyWith(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                        onPressed:
+                            () => Get.toNamed(
+                              "/request",
+                              arguments: {"data": data},
+                            )?.then((_) {
+                              controller.getRequests();
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+              if (data.nextApproval == controller.dC.profile.value?.username &&
+                  data.approvals.last.status != "REJECTED")
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedPrimaryButton(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 4,
+                        ),
+                        outlinedColor: ColorStyles.danger,
+                        text: "Reject",
+                        borderRadius: 6,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textStyle: Calibri700.copyWith(
+                          fontSize: 16,
+                          color: ColorStyles.danger,
+                        ),
+                        onPressed: () => controller.reject(data),
+                      ),
+                    ),
+                    10.pw,
+                    Expanded(
+                      child: PrimaryButton(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 4,
+                        ),
+                        backgroundColor: ColorStyles.genoa,
+                        text: "Approve",
+                        borderRadius: 6,
+                        textStyle: Calibri700.copyWith(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => controller.approve(data.id),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

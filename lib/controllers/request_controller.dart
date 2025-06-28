@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helthy/controllers/dashboard_controller.dart';
 import 'package:helthy/extensions/app_extension.dart';
+import 'package:helthy/models/approval_m.dart';
 import 'package:helthy/models/instalasi_form_m.dart';
 import 'package:helthy/models/item_m.dart';
+import 'package:helthy/models/profile_m.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/utils/dialogs.dart';
+import 'package:helthy/utils/prefs.dart';
 import 'package:helthy/views/request/accesories_info_builder.dart';
 import 'package:helthy/views/request/accesories_info_request.dart';
 import 'package:helthy/views/request/basic_info_request.dart';
@@ -15,6 +21,9 @@ import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class RequestController extends GetxController {
+  final _dC = Get.find<DashboardController>();
+  final Rxn<ProfileM> profile = Rxn<ProfileM>();
+
   final tcNoDokumen = TextEditingController();
   final tcTanggal = TextEditingController();
   final tcRevisi = TextEditingController(text: "1");
@@ -51,6 +60,8 @@ class RequestController extends GetxController {
 
   final RxBool isBasicInfoValid = false.obs;
 
+  final Rxn<InstalasiFormM> oldRequest = Rxn<InstalasiFormM>();
+
   PageController? pageController = PageController(initialPage: 0);
   final AutoScrollController autoScrollController = AutoScrollController(
     axis: Axis.horizontal,
@@ -71,6 +82,8 @@ class RequestController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
+    getProfile();
     List<TextEditingController> controllers = [
       tcNoDokumen,
       tcTanggal,
@@ -88,7 +101,46 @@ class RequestController extends GetxController {
     for (var c in controllers) {
       c.addListener(validateBasicInfo);
     }
-    super.onInit();
+
+    if (Get.arguments != null) {
+      if (Get.arguments["data"] is InstalasiFormM) {
+        oldRequest.value = Get.arguments["data"];
+        setOldData();
+      }
+    }
+  }
+
+  void setOldData() {
+    final data = oldRequest.value!;
+    tcNoDokumen.text = data.noDokumen;
+    tcAlamat.text = data.alamat;
+    tcTelepon.text = data.noTelepon;
+    tcKepalaLab.text = data.namaKepalaLab;
+    tcPenanggungJawab.text = data.namaKepalaLab;
+    tcAlat.text = data.alat;
+    tcMerk.text = data.merk;
+    tcSerialNumber.text = data.serialNumber;
+    tcInvoice.text = data.noInvoice;
+
+    tcTanggal.text =
+        oldRequest.value?.tanggal == null
+            ? ""
+            : DateFormat("dd MMM yyyy").format(data.tanggal!.toDate());
+    dtTanggal.value = oldRequest.value?.tanggal?.toDate();
+
+    tcTanggalPengajuanForm.text =
+        oldRequest.value?.tanggalPengajuan == null
+            ? ""
+            : DateFormat("dd MMM yyyy").format(data.tanggalPengajuan!.toDate());
+    dtTanggalPengajuanForm.value = oldRequest.value?.tanggalPengajuan?.toDate();
+
+    items.value = data.items;
+    accecories.value = data.accesories;
+  }
+
+  void getProfile() async {
+    final prof = SharedPrefs().getString("profile");
+    profile.value = ProfileM.fromJson(jsonDecode(prof!));
   }
 
   void validateBasicInfo() {
@@ -233,7 +285,9 @@ class RequestController extends GetxController {
 
   void submitRequest() async {
     final request = InstalasiFormM(
-      id: generateUuidV4(),
+      nextApproval: "",
+      createdBy: profile.value?.username ?? "-",
+      id: oldRequest.value != null ? oldRequest.value!.id : generateUuidV4(),
       type: "INSTALASI/UJI ALAT",
       noDokumen: tcNoDokumen.text,
       tanggal:
@@ -273,8 +327,15 @@ class RequestController extends GetxController {
       dtUpdated: Timestamp.now(),
       items: items,
       accesories: accecories,
-      approvals: [],
+      approvals: oldRequest.value != null ? oldRequest.value!.approvals : [],
     );
+    final data = ApprovalM(
+      nama: _dC.profile.value!.username,
+      tanggal: Timestamp.now(),
+      status: "REVISED",
+      isFinalStatus: false,
+    );
+    request.approvals.add(data);
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       await firestore

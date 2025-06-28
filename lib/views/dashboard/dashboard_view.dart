@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helthy/controllers/dashboard_controller.dart';
+import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/styles/color_styles.dart';
+import 'package:helthy/styles/text_styles.dart';
+import 'package:helthy/views/approval/approval_view.dart';
 import 'package:helthy/views/history/history_view.dart';
 import 'package:helthy/views/home/home_view.dart';
+import 'package:helthy/views/profile/profile_view.dart';
+import 'package:helthy/widgets/primary_button.dart';
 
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});
@@ -15,7 +20,7 @@ class DashboardView extends GetView<DashboardController> {
       body: Obx(
         () => IndexedStack(
           index: controller.indexTab.value,
-          children: [HomeView(), HistoryView(), Container(), Container()],
+          children: [HomeView(), HistoryView(), ApprovalView(), ProfileView()],
         ),
       ),
       floatingActionButtonLocation:
@@ -30,7 +35,89 @@ class DashboardView extends GetView<DashboardController> {
           color: Colors.grey.shade200,
         ),
         child: FloatingActionButton(
-          onPressed: () => Get.toNamed("/request"),
+          onPressed: () {
+            Get.bottomSheet(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(14),
+                    topRight: Radius.circular(14),
+                  ),
+                  color: Colors.white,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      12.ph,
+                      Text(
+                        'Choose Request Type',
+                        style: Calibri700.copyWith(fontSize: 16),
+                      ),
+                      16.ph,
+                      Obx(
+                        () => Column(
+                          children: List.generate(
+                            controller.typeRequests.length,
+                            (index) {
+                              return ListTile(
+                                onTap: () {
+                                  controller.indexTypeRequest.value = index;
+                                },
+                                minLeadingWidth: 0,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                leading: Text(
+                                  controller.typeRequests[index],
+                                  style: Calibri400.copyWith(fontSize: 16),
+                                ),
+                                trailing: Radio(
+                                  value: index,
+                                  groupValue: controller.indexTypeRequest.value,
+                                  onChanged: (val) {
+                                    controller.indexTypeRequest.value = index;
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      18.ph,
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: PrimaryButton(
+                          onPressed: () {
+                            if (controller.indexTypeRequest.value == 0) {
+                              controller.indexTypeRequest.value = 99;
+                              Get.back();
+                              Get.toNamed("/request");
+                            }
+                          },
+                          textStyle: Calibri700.copyWith(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          backgroundColor: ColorStyles.genoa,
+                          text: "Create a new Request",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ).then((_) {});
+          },
           elevation: 0,
           backgroundColor: ColorStyles.genoa,
           shape: RoundedRectangleBorder(
@@ -129,7 +216,7 @@ class DashboardView extends GetView<DashboardController> {
                       () => IconButton(
                         onPressed: () => controller.onChangeTab(2),
                         icon: Icon(
-                          Icons.notifications_active_rounded,
+                          Icons.approval_rounded,
                           size: controller.indexTab.value == 2 ? 24 : 20,
                           color:
                               controller.indexTab.value == 2

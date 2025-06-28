@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:helthy/utils/prefs.dart';
 
@@ -8,7 +6,6 @@ class SplashController extends GetxController {
 
   @override
   void onInit() {
-    log("MASUK");
     super.onInit();
     checkSession();
   }

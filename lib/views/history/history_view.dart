@@ -18,7 +18,7 @@ class HistoryView extends GetView<HistoryController> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
-            'History',
+            'Your Request',
             textAlign: TextAlign.center,
             style: Roboto700.copyWith(fontSize: 24, color: ColorStyles.genoa),
           ),
@@ -83,36 +83,45 @@ class HistoryView extends GetView<HistoryController> {
               ),
             ),
             16.ph,
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: TabBarView(
-                  children: [
-                    TabAll(requests: controller.requests),
-                    TabAll(
-                      requests:
-                          controller.requests.where((request) {
-                            if (request.approvals.isEmpty) return false;
-                            final sortedApprovals = [...request.approvals]
-                              ..sort((a, b) => a.tanggal.compareTo(b.tanggal));
-                            return sortedApprovals.last.status.toLowerCase() ==
-                                'approved';
-                          }).toList(),
-                    ),
-                    TabAll(
-                      requests:
-                          controller.requests.where((request) {
-                            if (request.approvals.isEmpty) return false;
-                            final sortedApprovals = [...request.approvals]
-                              ..sort((a, b) => a.tanggal.compareTo(b.tanggal));
-                            return sortedApprovals.last.status.toLowerCase() ==
-                                'rejected';
-                          }).toList(),
-                    ),
-                  ],
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const SizedBox();
+              }
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: TabBarView(
+                    children: [
+                      TabAll(requests: controller.requests),
+                      TabAll(
+                        requests:
+                            controller.requests.where((request) {
+                              if (request.approvals.isEmpty) return false;
+                              final sortedApprovals = [
+                                ...request.approvals,
+                              ]..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+                              return sortedApprovals.last.status
+                                      .toLowerCase() ==
+                                  'approved';
+                            }).toList(),
+                      ),
+                      TabAll(
+                        requests:
+                            controller.requests.where((request) {
+                              if (request.approvals.isEmpty) return false;
+                              final sortedApprovals = [
+                                ...request.approvals,
+                              ]..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+                              return sortedApprovals.last.status
+                                      .toLowerCase() ==
+                                  'rejected';
+                            }).toList(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),

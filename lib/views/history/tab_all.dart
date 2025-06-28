@@ -6,6 +6,7 @@ import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/models/instalasi_form_m.dart';
 import 'package:helthy/styles/text_styles.dart';
 import 'package:helthy/views/history/tab_card.dart';
+import 'package:helthy/views/request/detail_request_view.dart';
 
 class TabAll extends GetView<HistoryController> {
   const TabAll({super.key, required this.requests});
@@ -33,7 +34,19 @@ class TabAll extends GetView<HistoryController> {
     }
     return ListView(
       children: List.generate(requests.length, (i) {
-        return TabCard(ontap: () {}, data: requests[i]);
+        return TabCard(
+          ontap: () {
+            Get.to(
+              () => DetailRequestView(
+                data: requests[i],
+                isApproval: false,
+                onReject: null,
+                onApprove: null,
+              ),
+            );
+          },
+          data: requests[i],
+        );
       }),
     );
   }

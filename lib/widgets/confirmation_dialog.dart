@@ -14,6 +14,7 @@ class ConfirmationDialog extends StatelessWidget {
     this.leftButtonFunction,
     this.singleButtonConfirmation,
     this.customButtonConfirmation,
+    this.rightButtonColor,
   });
 
   final String title;
@@ -24,6 +25,7 @@ class ConfirmationDialog extends StatelessWidget {
   final Function() rightButtonAction;
   final Widget? singleButtonConfirmation;
   final Widget? customButtonConfirmation;
+  final Color? rightButtonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class ConfirmationDialog extends StatelessWidget {
               customButtonConfirmation!,
             ] else ...[
               DialogButtonAction(
+                rightButtonColor: rightButtonColor,
                 leftButtonFunction: leftButtonFunction,
                 leftButtonContent: leftButtonText,
                 rightButtonContent: rightButtonText,

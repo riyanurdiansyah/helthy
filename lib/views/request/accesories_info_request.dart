@@ -15,7 +15,10 @@ class AccesoriesInfoRequest extends GetView<RequestController> {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       children: [
-        Text('Create a new Request', style: Calibri700.copyWith(fontSize: 16)),
+        Text(
+          'Create a new request Instalasi',
+          style: Calibri700.copyWith(fontSize: 16),
+        ),
         4.ph,
         Text(
           '2 of 4 Completed Accesories Info',

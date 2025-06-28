@@ -12,11 +12,13 @@ class DialogButtonAction extends StatelessWidget {
     required this.leftButtonContent,
     required this.rightButtonContent,
     required this.rightButtonFunction,
+    this.rightButtonColor,
     this.leftButtonFunction,
   });
 
   final String leftButtonContent;
   final String rightButtonContent;
+  final Color? rightButtonColor;
   final Function()? leftButtonFunction;
   final Function() rightButtonFunction;
 
@@ -43,7 +45,7 @@ class DialogButtonAction extends StatelessWidget {
         Expanded(
           child: PrimaryButton(
             padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-            backgroundColor: ColorStyles.genoa,
+            backgroundColor: rightButtonColor ?? ColorStyles.genoa,
             text: rightButtonContent,
             borderRadius: 12,
             textStyle: Calibri700.copyWith(fontSize: 16, color: Colors.white),
