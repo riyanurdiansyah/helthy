@@ -31,6 +31,7 @@ class ApprovalView extends GetView<ApprovalController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                70.ph,
                 Icon(CupertinoIcons.doc, size: 80, color: Colors.grey.shade500),
                 25.ph,
                 Text(

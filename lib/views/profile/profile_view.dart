@@ -111,7 +111,7 @@ class ProfileView extends GetView<ProfileController> {
               hideShadow: true,
               child: Row(
                 children: [
-                  Icon(CupertinoIcons.person),
+                  Icon(CupertinoIcons.signature),
                   SizedBox(width: 16),
                   Expanded(
                     child: Padding(
@@ -140,7 +140,7 @@ class ProfileView extends GetView<ProfileController> {
               hideShadow: true,
               child: Row(
                 children: [
-                  Icon(CupertinoIcons.person),
+                  Icon(CupertinoIcons.lock),
                   SizedBox(width: 16),
                   Expanded(
                     child: Padding(

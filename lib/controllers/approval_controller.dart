@@ -268,17 +268,11 @@ class ApprovalController extends GetxController {
       final rawBytes = await signatureController.toPngBytes();
       if (rawBytes == null) throw Exception('Gagal konversi tanda tangan');
 
-      // Compress image (PNG redraw)
-      final compressedBytes = await compressSignatureImage(rawBytes);
-      if (compressedBytes == null) {
-        throw Exception('Gagal kompress tanda tangan');
-      }
-
       if (updateSignature.value) {
         final ref = FirebaseStorage.instance.ref().child(
           'signatures/${generateUuidV4()}.png',
         );
-        final uploadTask = await ref.putData(compressedBytes);
+        final uploadTask = await ref.putData(rawBytes);
 
         downloadUrl = await uploadTask.ref.getDownloadURL();
       } else {
