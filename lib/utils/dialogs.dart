@@ -1,8 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/styles/color_styles.dart';
+import 'package:helthy/styles/text_styles.dart';
+import 'package:helthy/widgets/custom_container_shadow.dart';
 
 class AppDialog {
+  static showDialogLoading({required bool dismissable, String? text}) {
+    Get.dialog(
+      WillPopScope(
+        onWillPop: () => Future.value(dismissable),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Material(
+              color: Colors.transparent,
+              child: CustomContainerShadow(
+                padding: EdgeInsets.all(20),
+                borderRadius: 12,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 4,
+                        color: ColorStyles.primary,
+                      ),
+                    ),
+                    if (text != null) ...[
+                      16.ph,
+                      Text(
+                        text,
+                        style: Calibri400.copyWith(
+                          fontSize: 14,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  static closeDialogLoading({bool useSimpleGetBack = false}) {
+    if (Get.isDialogOpen ?? false) {
+      Get.until((route) => !(Get.isDialogOpen ?? true));
+    }
+  }
+
   static Future<DateTime?> datePicker({
     required DateTime firstDate,
     required DateTime backDates,

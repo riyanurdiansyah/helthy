@@ -3,6 +3,9 @@ import 'package:helthy/views/dashboard/dashboard_binding.dart';
 import 'package:helthy/views/dashboard/dashboard_view.dart';
 import 'package:helthy/views/home/home_view.dart';
 import 'package:helthy/views/login_view.dart';
+import 'package:helthy/views/profile/change_password_binding.dart';
+import 'package:helthy/views/profile/change_password_view.dart';
+import 'package:helthy/views/request/request_training_view.dart';
 import 'package:helthy/views/request/request_view.dart';
 import 'package:helthy/views/splash_view.dart';
 
@@ -31,6 +34,11 @@ class AppPages {
       binding: RequestBinding(),
     ),
     GetPage(
+      name: '/request-training',
+      page: () => const RequestTrainingView(),
+      binding: RequestBinding(),
+    ),
+    GetPage(
       name: '/login',
       page: () => const LoginView(),
       binding: LoginBinding(),
@@ -39,6 +47,11 @@ class AppPages {
       name: '/dashboard',
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: '/change-password',
+      page: () => const ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
   ];
 }

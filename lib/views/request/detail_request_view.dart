@@ -18,7 +18,7 @@ final Calibri700 = TextStyle(
 );
 
 class DetailRequestView extends GetView<DashboardController> {
-  final InstalasiFormM data;
+  final RequestFormM data;
   final bool isApproval;
   final Function()? onReject;
   final Function()? onApprove;
@@ -52,6 +52,9 @@ class DetailRequestView extends GetView<DashboardController> {
   }
 
   Widget infoRow(String label, String value) {
+    if (value.isEmpty) {
+      return const SizedBox();
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -190,12 +193,16 @@ class DetailRequestView extends GetView<DashboardController> {
             ]),
 
             sectionBox("Informasi Umum", [
-              infoRow("ID", data.id),
+              infoRow("Tipe Pengajuan", data.type),
+              // infoRow("ID", data.id),
               infoRow("No Dokumen", data.noDokumen),
-              infoRow("Jenis", data.type),
-              infoRow("Tanggal", formatDate(data.tanggal)),
               infoRow("Revisi", data.noRevisi.toString()),
+              infoRow("Nama RS/Lab", data.namaRS),
+              infoRow("Tanggal", formatDate(data.tanggal)),
+              infoRow("PIC", data.pic),
               infoRow("Nama Lab", data.namaLab),
+              infoRow("Divisi RS Yang Meminta", data.divisi),
+              infoRow("PIC", data.namaLab),
               infoRow("Alamat", data.alamat),
               infoRow("Telepon", data.noTelepon),
               infoRow("Alat", data.alat),
@@ -224,10 +231,11 @@ class DetailRequestView extends GetView<DashboardController> {
               infoRow("Diupdate", formatDate(data.dtUpdated)),
             ]),
 
-            sectionBox("Catatan", [
-              infoRow("Catatan", data.catatan),
-              infoRow("Pra-Instalasi", data.praInstalasi),
-            ]),
+            if (data.catatan.isNotEmpty && data.praInstalasi.isNotEmpty)
+              sectionBox("Catatan", [
+                infoRow("Catatan", data.catatan),
+                infoRow("Pra-Instalasi", data.praInstalasi),
+              ]),
 
             sectionBox("Items", [
               ...data.items.map(
@@ -239,17 +247,17 @@ class DetailRequestView extends GetView<DashboardController> {
                 ),
               ),
             ]),
-
-            sectionBox("Accessories", [
-              ...data.accesories.map(
-                (item) => listItem(
-                  item.namaItem,
-                  "${item.jumlah} ${item.satuan} - ${item.status}",
-                  Icons.check_circle,
-                  iconColor: Colors.green,
+            if (data.accesories.isNotEmpty)
+              sectionBox("Accessories", [
+                ...data.accesories.map(
+                  (item) => listItem(
+                    item.namaItem,
+                    "${item.jumlah} ${item.satuan} - ${item.status}",
+                    Icons.check_circle,
+                    iconColor: Colors.green,
+                  ),
                 ),
-              ),
-            ]),
+              ]),
             if (data.approvals.isNotEmpty)
               sectionBox("Approvals", [
                 ...data.approvals.map(

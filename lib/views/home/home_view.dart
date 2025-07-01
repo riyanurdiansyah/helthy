@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
 
@@ -28,7 +29,30 @@ class HomeView extends GetView<HomeController> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_buildHeader()],
+            children: [
+              _buildHeader(),
+              20.ph,
+              // Container(
+              //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              //   child: Row(
+              //     children: [
+              //       Card(
+              //         elevation: 20,
+              //         child: Container(
+              //           padding: const EdgeInsets.symmetric(
+              //             horizontal: 12,
+              //             vertical: 24,
+              //           ),
+              //           decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(4),
+              //             color: Colors.amber,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+            ],
           ),
         ),
       ),

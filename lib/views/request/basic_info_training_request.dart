@@ -6,8 +6,8 @@ import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
 import 'package:helthy/widgets/filled_primary_textfield.dart';
 
-class BasicInfoRequest extends GetView<RequestController> {
-  const BasicInfoRequest({super.key});
+class BasicInfoTrainingRequest extends GetView<RequestController> {
+  const BasicInfoTrainingRequest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +15,12 @@ class BasicInfoRequest extends GetView<RequestController> {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       children: [
         Text(
-          'Create a new request Instalasi',
+          'Create a new request Training',
           style: Calibri700.copyWith(fontSize: 16),
         ),
         4.ph,
         Text(
-          '1 of 3 Completed Basic Info',
+          '1 of 2 Completed Basic Info',
           style: Calibri400.copyWith(fontSize: 16),
         ),
         10.ph,
@@ -56,9 +56,51 @@ class BasicInfoRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
+          labelText: 'Nama RS/Lab',
+          isRequired: true,
+          controller: controller.tcNamaRS,
+        ),
+        14.ph,
+        FilledPrimaryTextfield(
+          style: Calibri400.copyWith(
+            fontSize: 18,
+            color: ColorStyles.disableBold,
+          ),
+          labelText: 'PIC',
+          isRequired: true,
+          controller: controller.tcPIC,
+        ),
+        14.ph,
+        FilledPrimaryTextfield(
+          style: Calibri400.copyWith(
+            fontSize: 18,
+            color: ColorStyles.disableBold,
+          ),
           labelText: 'Alamat',
           isRequired: true,
           controller: controller.tcAlamat,
+        ),
+        14.ph,
+        FilledPrimaryTextfield(
+          style: Calibri400.copyWith(
+            fontSize: 18,
+            color: ColorStyles.disableBold,
+          ),
+          labelText: 'Divisi RS Yang Meminta',
+          isRequired: true,
+          textInputAction: TextInputAction.next,
+          controller: controller.tcDivisi,
+        ),
+        14.ph,
+        FilledPrimaryTextfield(
+          style: Calibri400.copyWith(
+            fontSize: 18,
+            color: ColorStyles.disableBold,
+          ),
+          labelText: 'Merk',
+          isRequired: true,
+          textInputAction: TextInputAction.next,
+          controller: controller.tcMerk,
         ),
         14.ph,
         FilledPrimaryTextfield(
@@ -76,21 +118,10 @@ class BasicInfoRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          labelText: 'Kepala Laboratorium',
+          labelText: 'Business Representative Person',
           isRequired: true,
           textInputAction: TextInputAction.next,
-          controller: controller.tcKepalaLab,
-        ),
-        14.ph,
-        FilledPrimaryTextfield(
-          style: Calibri400.copyWith(
-            fontSize: 18,
-            color: ColorStyles.disableBold,
-          ),
-          labelText: 'Penanggung Jawab Alat',
-          isRequired: true,
-          textInputAction: TextInputAction.next,
-          controller: controller.tcPenanggungJawab,
+          controller: controller.tcBR,
         ),
         14.ph,
         FilledPrimaryTextfield(
@@ -115,10 +146,10 @@ class BasicInfoRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          labelText: 'Alat',
+          labelText: 'Technical Support',
           isRequired: true,
           textInputAction: TextInputAction.next,
-          controller: controller.tcAlat,
+          controller: controller.tcTechnicalSupp,
         ),
         14.ph,
         FilledPrimaryTextfield(
@@ -126,10 +157,15 @@ class BasicInfoRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          labelText: 'Merk',
+          onTap:
+              () => controller.onPickDate(
+                controller.tcTanggalPresentasi,
+                controller.dtTanggalPresentasi,
+              ),
+          labelText: 'Tanggal Presentasi',
           isRequired: true,
-          textInputAction: TextInputAction.next,
-          controller: controller.tcMerk,
+          readOnly: true,
+          controller: controller.tcTanggalPresentasi,
         ),
         14.ph,
         FilledPrimaryTextfield(
@@ -137,21 +173,24 @@ class BasicInfoRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          labelText: 'Serial Number',
+          labelText: 'Online / Offline',
           isRequired: true,
           textInputAction: TextInputAction.next,
-          controller: controller.tcSerialNumber,
+          controller: controller.tcOnlineOffline,
         ),
+
         14.ph,
         FilledPrimaryTextfield(
           style: Calibri400.copyWith(
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          textInputAction: TextInputAction.next,
-          labelText: 'No SPK/Invoice',
+          labelText: 'Note',
           isRequired: true,
-          controller: controller.tcInvoice,
+          minLines: 3,
+          maxLength: 6,
+          textInputAction: TextInputAction.next,
+          controller: controller.tcNote,
         ),
       ],
     );

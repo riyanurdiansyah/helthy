@@ -4,11 +4,11 @@ import 'package:helthy/controllers/request_controller.dart';
 import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
-import 'package:helthy/views/request/item_card.dart';
+import 'package:helthy/views/request/item_training_card.dart';
 import 'package:helthy/widgets/custom_container_shadow.dart';
 
-class ItemRequest extends GetView<RequestController> {
-  const ItemRequest({super.key});
+class ItemTrainingRequest extends GetView<RequestController> {
+  const ItemTrainingRequest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +16,18 @@ class ItemRequest extends GetView<RequestController> {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       children: [
         Text(
-          'Create a new request Instalasi',
+          'Create a new request Training',
           style: Calibri700.copyWith(fontSize: 16),
         ),
         4.ph,
         Text(
-          '2 of 3 Completed Item Info',
+          '2 of 2 Completed Item Info',
           style: Calibri400.copyWith(fontSize: 16),
         ),
         14.ph,
         CustomContainerShadow(
           onTap: () {
-            controller.showItem();
+            controller.showItem(nameColumn3: "Keterangan");
           },
           backgroundColor: ColorStyles.atlantis30,
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -56,10 +56,13 @@ class ItemRequest extends GetView<RequestController> {
             children: List.generate(controller.items.length, (i) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: ItemCard(
+                child: ItemTrainingCard(
                   data: controller.items[i],
                   onDetail:
-                      () => controller.showItem(data: controller.items[i]),
+                      () => controller.showItem(
+                        data: controller.items[i],
+                        nameColumn3: "Keterangan",
+                      ),
                   onDelete:
                       () => controller.doDeleteItem(controller.items[i].id),
                 ),

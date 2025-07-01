@@ -6,8 +6,8 @@ import 'package:helthy/styles/text_styles.dart';
 import 'package:helthy/views/request/item_section_request_builder.dart';
 import 'package:helthy/widgets/confirmation_dialog.dart';
 
-class RequestView extends GetView<RequestController> {
-  const RequestView({super.key});
+class RequestTrainingView extends GetView<RequestController> {
+  const RequestTrainingView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,10 @@ class RequestView extends GetView<RequestController> {
         actions: [
           GestureDetector(
             onTap: () {
-              if (controller.isBasicInfoValid.value ||
+              if (controller.isBasicInfoTrainingValid.value ||
                   controller.step.value > 1) {
-                if (controller.step.value < controller.listPage.length) {
+                if (controller.step.value <
+                    controller.listTrainingPage.length) {
                   controller.step(controller.step.value + 1);
                   controller.autoScrollController.scrollToIndex(
                     controller.step.value,
@@ -47,12 +48,12 @@ class RequestView extends GetView<RequestController> {
                       title:
                           controller.oldRequest.value != null
                               ? 'Update a Request'
-                              : 'Create a new request Instalasi',
+                              : 'Create a new request Training',
                       leftButtonText: 'Back',
                       rightButtonText: 'Save',
                       rightButtonAction: () {
                         Get.back();
-                        controller.submitRequest("INSTALASI/UJI ALAT");
+                        controller.submitRequest("TRAINING/PRESENTASI");
                       },
                       content: Text(
                         'Are you sure want to save?',
@@ -75,24 +76,30 @@ class RequestView extends GetView<RequestController> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color:
-                      controller.step.value == controller.listSection.length ||
+                      controller.step.value ==
+                                  controller.listSectionTraining.length ||
                               (controller.step.value == 1 &&
-                                  controller.isBasicInfoValid.value) ||
+                                  controller.isBasicInfoTrainingValid.value) ||
                               controller.step.value > 1
                           ? ColorStyles.atlantis100
                           : ColorStyles.disableLight,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child:
-                    controller.step.value != controller.listSection.length
+                    controller.step.value !=
+                            controller.listSectionTraining.length
                         ? Icon(
                           Icons.arrow_forward_ios_rounded,
                           size: 18,
                           color:
                               controller.step.value ==
-                                          controller.listSection.length ||
+                                          controller
+                                              .listSectionTraining
+                                              .length ||
                                       (controller.step.value == 1 &&
-                                          controller.isBasicInfoValid.value) ||
+                                          controller
+                                              .isBasicInfoTrainingValid
+                                              .value) ||
                                       controller.step.value > 1
                                   ? Colors.white
                                   : ColorStyles.disableBold,
@@ -126,14 +133,14 @@ class RequestView extends GetView<RequestController> {
               controller: controller.autoScrollController,
               scrollDirection: Axis.horizontal,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: controller.listSection.length,
+              itemCount: controller.listSectionTraining.length,
               itemBuilder: (context, index) {
                 return Obx(
                   () => ItemSectionRequestBuilder(
                     controller: controller,
                     index: index,
                     step: controller.step.value,
-                    itemSection: controller.listSection[index],
+                    itemSection: controller.listSectionTraining[index],
                   ),
                 );
               },
@@ -143,9 +150,9 @@ class RequestView extends GetView<RequestController> {
             child: PageView.builder(
               controller: controller.pageController,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: controller.listPage.length,
+              itemCount: controller.listTrainingPage.length,
               itemBuilder: (context, index) {
-                return controller.listPage[index];
+                return controller.listTrainingPage[index];
               },
             ),
           ),

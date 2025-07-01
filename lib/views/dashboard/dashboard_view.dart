@@ -98,11 +98,14 @@ class DashboardView extends GetView<DashboardController> {
                         width: double.infinity,
                         child: PrimaryButton(
                           onPressed: () {
+                            Get.back();
                             if (controller.indexTypeRequest.value == 0) {
-                              controller.indexTypeRequest.value = 99;
-                              Get.back();
                               Get.toNamed("/request");
                             }
+                            if (controller.indexTypeRequest.value == 1) {
+                              Get.toNamed("/request-training");
+                            }
+                            controller.indexTypeRequest.value = 99;
                           },
                           textStyle: Calibri700.copyWith(
                             fontSize: 16,

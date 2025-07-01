@@ -14,7 +14,7 @@ class TabCard extends GetView<HistoryController> {
   const TabCard({super.key, this.ontap, required this.data, this.constStatus});
 
   final Function()? ontap;
-  final InstalasiFormM data;
+  final RequestFormM data;
   final String? constStatus;
 
   @override
@@ -58,7 +58,7 @@ class TabCard extends GetView<HistoryController> {
                     child: Text(
                       constStatus ??
                           (data.approvals.isEmpty
-                              ? "Submitted by"
+                              ? "Submitted"
                               : data.approvals.last.status),
                       textAlign: TextAlign.center,
                       style: Calibri700.copyWith(
@@ -127,9 +127,12 @@ class TabCard extends GetView<HistoryController> {
                   ),
                 ],
               ),
-              if (data.approvals.last.status == "REJECTED") 16.ph,
+              if (data.approvals.isNotEmpty &&
+                  data.approvals.last.status == "REJECTED")
+                16.ph,
 
-              if (data.approvals.last.status == "REJECTED")
+              if (data.approvals.isNotEmpty &&
+                  data.approvals.last.status == "REJECTED")
                 Row(
                   children: [
                     Expanded(
@@ -156,8 +159,9 @@ class TabCard extends GetView<HistoryController> {
                     ),
                   ],
                 ),
-              if (data.nextApproval == controller.dC.profile.value?.username &&
-                  data.approvals.last.status != "REJECTED")
+              if (data.approvals.isNotEmpty &&
+                  data.approvals.last.status != "REJECTED" &&
+                  data.approvals.last.status != "REVISED")
                 Row(
                   children: [
                     Expanded(

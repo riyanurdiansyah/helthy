@@ -21,7 +21,7 @@ class AccesoriesInfoRequest extends GetView<RequestController> {
         ),
         4.ph,
         Text(
-          '2 of 4 Completed Accesories Info',
+          '3 of 3 Completed Accesories Info',
           style: Calibri400.copyWith(fontSize: 16),
         ),
         14.ph,

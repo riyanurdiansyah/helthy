@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -15,8 +16,8 @@ class LoginView extends GetView<LoginController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: controller.emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              controller: controller.usernameController,
+              decoration: const InputDecoration(labelText: 'Username'),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -34,4 +35,4 @@ class LoginView extends GetView<LoginController> {
       ),
     );
   }
-} 
+}

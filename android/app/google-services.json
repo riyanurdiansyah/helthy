@@ -1,64 +1,159 @@
 {
   "project_info": {
-    "project_number": "140424544275",
-    "project_id": "helthy-a2c57",
-    "storage_bucket": "helthy-a2c57.firebasestorage.app"
+    "project_number": "974072583230",
+    "project_id": "e-recruitment-59a9b",
+    "storage_bucket": "e-recruitment-59a9b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:140424544275:android:85c1ef709e72e61f4d3fe6",
+        "mobilesdk_app_id": "1:974072583230:android:6b6e9571d1721fe3e1ed6f",
         "android_client_info": {
-          "package_name": "com.example.husui"
+          "package_name": "com.erecruitment.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "974072583230-9ho7spbsm6ukd0b93rmu404bq4o7osk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ"
+          "current_key": "AIzaSyC0l-gVnjGXT7bACX1EzFk6yfec5RXuY-Y"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974072583230-9bee1c69u1oihh525i2aj9k4fabq2dt1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "974072583230-pfu2bmpssrba3i3vn7p8ttov8vp4himm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erecruitment.app"
+              }
+            }
+          ]
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:140424544275:android:565df16b97d3848b4d3fe6",
+        "mobilesdk_app_id": "1:974072583230:android:c482ac40e3f04e34e1ed6f",
         "android_client_info": {
-          "package_name": "com.healthy.app.dev"
+          "package_name": "com.example.flutter_application_2"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "974072583230-9ho7spbsm6ukd0b93rmu404bq4o7osk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ"
+          "current_key": "AIzaSyC0l-gVnjGXT7bACX1EzFk6yfec5RXuY-Y"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974072583230-9bee1c69u1oihh525i2aj9k4fabq2dt1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "974072583230-pfu2bmpssrba3i3vn7p8ttov8vp4himm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erecruitment.app"
+              }
+            }
+          ]
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:140424544275:android:7eba0b919358d13a4d3fe6",
+        "mobilesdk_app_id": "1:974072583230:android:ff03dadc8983ee32e1ed6f",
+        "android_client_info": {
+          "package_name": "com.example.sso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974072583230-io54v56dp1goh8jm0vro43m5ke4gthgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sso",
+            "certificate_hash": "1ae416868d32415c4815cb8b8f622ca979775c8d"
+          }
+        },
+        {
+          "client_id": "974072583230-9ho7spbsm6ukd0b93rmu404bq4o7osk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0l-gVnjGXT7bACX1EzFk6yfec5RXuY-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974072583230-9bee1c69u1oihh525i2aj9k4fabq2dt1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "974072583230-pfu2bmpssrba3i3vn7p8ttov8vp4himm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erecruitment.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974072583230:android:e1aba982ffffa7e1e1ed6f",
         "android_client_info": {
           "package_name": "com.helthy.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "974072583230-9ho7spbsm6ukd0b93rmu404bq4o7osk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ"
+          "current_key": "AIzaSyC0l-gVnjGXT7bACX1EzFk6yfec5RXuY-Y"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974072583230-9bee1c69u1oihh525i2aj9k4fabq2dt1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "974072583230-pfu2bmpssrba3i3vn7p8ttov8vp4himm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erecruitment.app"
+              }
+            }
+          ]
         }
       }
     }

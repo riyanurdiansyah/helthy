@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:helthy/controllers/approval_controller.dart';
 import 'package:helthy/controllers/history_controller.dart';
 import 'package:helthy/controllers/home_controller.dart';
 import 'package:helthy/models/profile_m.dart';
+import 'package:helthy/utils/dialogs.dart';
 import 'package:helthy/utils/prefs.dart';
 
 class DashboardController extends GetxController {
@@ -33,6 +35,29 @@ class DashboardController extends GetxController {
   Future getProfile() async {
     final prof = SharedPrefs().getString("profile");
     profile.value = ProfileM.fromJson(jsonDecode(prof!));
+  }
+
+  Future getProfileOnline() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final userQuery =
+        await firestore
+            .collection("users")
+            .where("id", isEqualTo: uid)
+            .limit(1)
+            .get();
+
+    if (userQuery.docs.isEmpty) {
+      AppDialog.showErrorMessage("Username tidak ditemukan");
+      return;
+    }
+
+    final userData = userQuery.docs.first.data();
+    await SharedPrefs().setString(
+      "profile",
+      json.encode(ProfileM.fromJson(userData).toJson()),
+    );
+    getProfile();
   }
 
   Future getAllUser() async {

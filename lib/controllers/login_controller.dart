@@ -15,11 +15,11 @@ class LoginController extends GetxController {
   final RxBool isFirebaseInitialized = false.obs;
 
   // Form validation
-  final RxString emailError = ''.obs;
+  final RxString usernameError = ''.obs;
   final RxString passwordError = ''.obs;
 
   // Text editing controllers
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   final _prefs = SharedPreferences.getInstance();
@@ -64,7 +64,7 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
     super.onClose();
   }
@@ -73,16 +73,12 @@ class LoginController extends GetxController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  bool validateEmail(String email) {
+  bool validateUsername(String email) {
     if (email.isEmpty) {
-      emailError.value = 'Email is required';
+      usernameError.value = 'Username is required';
       return false;
     }
-    if (!GetUtils.isEmail(email)) {
-      emailError.value = 'Please enter a valid email';
-      return false;
-    }
-    emailError.value = '';
+    usernameError.value = '';
     return true;
   }
 
@@ -111,64 +107,69 @@ class LoginController extends GetxController {
       return;
     }
 
-    if (!validateEmail(emailController.text) ||
-        !validatePassword(passwordController.text)) {
+    final username = usernameController.text.trim();
+    final password = passwordController.text;
+
+    if (username.isEmpty || !validatePassword(password)) {
       return;
     }
 
     try {
       isLoading.value = true;
 
-      // Sign in with Firebase
+      // Cari email berdasarkan username di Firestore
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final userQuery =
+          await firestore
+              .collection("users")
+              .where("username", isEqualTo: username)
+              .limit(1)
+              .get();
+
+      if (userQuery.docs.isEmpty) {
+        Get.snackbar(
+          "Login Failed",
+          "Username tidak ditemukan.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      final userData = userQuery.docs.first.data();
+      final email = userData["email"];
+
+      // Lakukan login menggunakan email yang ditemukan
       final UserCredential userCredential = await _auth
-          .signInWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text,
-          );
+          .signInWithEmailAndPassword(email: email, password: password);
 
       if (userCredential.user != null) {
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        final user =
-            await firestore
-                .collection("users")
-                .where("email", isEqualTo: userCredential.user!.email)
-                .limit(1)
-                .get();
-        if (user.docs.isEmpty) {
-          Get.snackbar(
-            "Error",
-            "Login is failed.. user is not registered",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-          );
-          return;
-        }
-        // Save login state
+        // Simpan state login
         final prefs = await _prefs;
         await prefs.setString(
           "profile",
-          json.encode(ProfileM.fromJson(user.docs.first.data()).toJson()),
+          json.encode(ProfileM.fromJson(userData).toJson()),
         );
         await prefs.setBool('hasSession', true);
 
-        // Navigate to home
+        // Navigasi ke dashboard
         Get.offAllNamed("/dashboard");
       }
     } on FirebaseAuthException catch (e) {
       String message;
       switch (e.code) {
         case 'user-not-found':
-          message = 'No user found with this email.';
+          message = 'User tidak ditemukan.';
           break;
         case 'wrong-password':
-          message = 'Wrong password provided.';
+          message = 'Password salah.';
           break;
         case 'invalid-email':
-          message = 'The email address is invalid.';
+          message = 'Alamat email tidak valid.';
           break;
         case 'user-disabled':
-          message = 'This user account has been disabled.';
+          message = 'Akun pengguna telah dinonaktifkan.';
           break;
         default:
           log("ERROR $e");
@@ -184,7 +185,7 @@ class LoginController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'An unexpected error occurred. Please try again. $e',
+        'Terjadi kesalahan tidak terduga. Silakan coba lagi. $e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

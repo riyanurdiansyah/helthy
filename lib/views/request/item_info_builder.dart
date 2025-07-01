@@ -10,9 +10,10 @@ import 'package:helthy/widgets/filled_primary_textfield.dart';
 import 'package:helthy/widgets/primary_button.dart';
 
 class ItemInfoBuilder extends GetView<RequestController> {
-  ItemInfoBuilder({super.key, this.data});
+  ItemInfoBuilder({super.key, this.data, this.nameColumn3});
 
   ItemM? data;
+  String? nameColumn3;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class ItemInfoBuilder extends GetView<RequestController> {
                 fontSize: 18,
                 color: ColorStyles.disableBold,
               ),
-              labelText: 'Status',
+              labelText: nameColumn3 ?? 'Status',
               isRequired: true,
               controller: controller.tcStatus,
             ),

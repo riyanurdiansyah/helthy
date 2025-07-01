@@ -5,12 +5,14 @@ class ApprovalM {
   final Timestamp tanggal;
   final String status;
   final bool isFinalStatus;
+  final String signature;
 
   ApprovalM({
     required this.nama,
     required this.tanggal,
     required this.status,
     required this.isFinalStatus,
+    required this.signature,
   });
 
   factory ApprovalM.fromJson(Map<String, dynamic> json) => ApprovalM(
@@ -18,6 +20,7 @@ class ApprovalM {
     tanggal: json['tanggal'],
     status: json['status'],
     isFinalStatus: json['isFinalStatus'],
+    signature: json['signature'] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
@@ -25,5 +28,6 @@ class ApprovalM {
     'tanggal': tanggal,
     'status': status,
     'isFinalStatus': isFinalStatus,
+    'signature': signature,
   };
 }

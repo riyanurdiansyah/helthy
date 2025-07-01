@@ -8,7 +8,7 @@ import 'package:helthy/styles/color_styles.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<String?> writeInstalasiFormsToExcel(InstalasiFormM data) async {
+Future<String?> writeInstalasiFormsToExcel(RequestFormM data) async {
   try {
     var excel = Excel.createExcel();
     final Sheet sheet = excel['Sheet1'];

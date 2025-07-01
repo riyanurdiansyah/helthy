@@ -58,13 +58,13 @@ class LoginView extends GetView<LoginController> {
                 const SizedBox(height: 48),
                 // Email Field
                 TextField(
-                  controller: controller.emailController,
+                  controller: controller.usernameController,
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'Username',
                     labelStyle: const TextStyle(color: Colors.white70),
-                    prefixIcon: const Icon(Icons.email, color: Colors.white70),
+                    prefixIcon: const Icon(Icons.person, color: Colors.white70),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.white30),
@@ -82,12 +82,13 @@ class LoginView extends GetView<LoginController> {
                       borderSide: const BorderSide(color: Colors.white),
                     ),
                     errorText:
-                        controller.emailError.value.isEmpty
+                        controller.usernameError.value.isEmpty
                             ? null
-                            : controller.emailError.value,
+                            : controller.usernameError.value,
                     errorStyle: const TextStyle(color: Colors.white),
                   ),
-                  onChanged: (value) => controller.validateEmail(value),
+                  cursorColor: Colors.white,
+                  onChanged: (value) => controller.validateUsername(value),
                 ),
                 const SizedBox(height: 16),
                 // Password Field
@@ -131,6 +132,7 @@ class LoginView extends GetView<LoginController> {
                               : controller.passwordError.value,
                       errorStyle: const TextStyle(color: Colors.white),
                     ),
+                    cursorColor: Colors.white,
                     onChanged: (value) => controller.validatePassword(value),
                   ),
                 ),

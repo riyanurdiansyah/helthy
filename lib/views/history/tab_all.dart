@@ -11,7 +11,7 @@ import 'package:helthy/views/request/detail_request_view.dart';
 class TabAll extends GetView<HistoryController> {
   const TabAll({super.key, required this.requests});
 
-  final List<InstalasiFormM> requests;
+  final List<RequestFormM> requests;
 
   @override
   Widget build(BuildContext context) {

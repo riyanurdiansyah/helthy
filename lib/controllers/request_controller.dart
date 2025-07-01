@@ -15,8 +15,10 @@ import 'package:helthy/utils/prefs.dart';
 import 'package:helthy/views/request/accesories_info_builder.dart';
 import 'package:helthy/views/request/accesories_info_request.dart';
 import 'package:helthy/views/request/basic_info_request.dart';
+import 'package:helthy/views/request/basic_info_training_request.dart';
 import 'package:helthy/views/request/item_info_builder.dart';
 import 'package:helthy/views/request/item_info_request.dart';
+import 'package:helthy/views/request/item_info_training_request.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -26,14 +28,21 @@ class RequestController extends GetxController {
 
   final tcNoDokumen = TextEditingController();
   final tcTanggal = TextEditingController();
+  final tcTanggalPresentasi = TextEditingController();
   final tcRevisi = TextEditingController(text: "1");
+  final tcNamaRS = TextEditingController();
+  final tcPIC = TextEditingController();
   final tcAlamat = TextEditingController();
   final tcTelepon = TextEditingController();
   final tcKepalaLab = TextEditingController();
+  final tcDivisi = TextEditingController();
   final tcPenanggungJawab = TextEditingController();
+  final tcBR = TextEditingController();
   final tcAlat = TextEditingController();
   final tcTanggalPengajuanForm = TextEditingController();
   final tcMerk = TextEditingController();
+  final tcOnlineOffline = TextEditingController();
+  final tcNote = TextEditingController();
   final tcSerialNumber = TextEditingController();
   final tcInvoice = TextEditingController();
   final tcBusinessRepresentative = TextEditingController();
@@ -54,13 +63,15 @@ class RequestController extends GetxController {
   final Rxn<DateTime> dtTanggalPemasangan = Rxn<DateTime>();
   final Rxn<DateTime> dtTanggalPermintaanPemasangan = Rxn<DateTime>();
   final Rxn<DateTime> dtTanggalPengajuanForm = Rxn<DateTime>();
+  final Rxn<DateTime> dtTanggalPresentasi = Rxn<DateTime>();
 
   final RxList<ItemM> items = <ItemM>[].obs;
   final RxList<ItemM> accecories = <ItemM>[].obs;
 
   final RxBool isBasicInfoValid = false.obs;
+  final RxBool isBasicInfoTrainingValid = false.obs;
 
-  final Rxn<InstalasiFormM> oldRequest = Rxn<InstalasiFormM>();
+  final Rxn<RequestFormM> oldRequest = Rxn<RequestFormM>();
 
   PageController? pageController = PageController(initialPage: 0);
   final AutoScrollController autoScrollController = AutoScrollController(
@@ -68,16 +79,27 @@ class RequestController extends GetxController {
   );
 
   RxInt step = 1.obs;
+
   List<Map<String, dynamic>> listSection = [
     {"id": 1, "step": "Basic Info"},
     {"id": 2, "step": "Item Info"},
     {"id": 3, "step": "Accesories Info"},
   ];
 
+  List<Map<String, dynamic>> listSectionTraining = [
+    {"id": 1, "step": "Basic Info"},
+    {"id": 2, "step": "Item Info"},
+  ];
+
   List<Widget> listPage = [
     BasicInfoRequest(),
     ItemRequest(),
     AccesoriesInfoRequest(),
+  ];
+
+  List<Widget> listTrainingPage = [
+    BasicInfoTrainingRequest(),
+    ItemTrainingRequest(),
   ];
 
   @override
@@ -96,14 +118,22 @@ class RequestController extends GetxController {
       tcMerk,
       tcSerialNumber,
       tcInvoice,
+      tcBR,
+      tcTechnicalSupp,
+      tcOnlineOffline,
+      tcDivisi,
+      tcNamaRS,
+      tcTanggalPresentasi,
+      tcPIC,
     ];
 
     for (var c in controllers) {
       c.addListener(validateBasicInfo);
+      c.addListener(validateBasicInfoTraining);
     }
 
     if (Get.arguments != null) {
-      if (Get.arguments["data"] is InstalasiFormM) {
+      if (Get.arguments["data"] is RequestFormM) {
         oldRequest.value = Get.arguments["data"];
         setOldData();
       }
@@ -158,6 +188,23 @@ class RequestController extends GetxController {
         tcInvoice.text.isNotEmpty;
   }
 
+  void validateBasicInfoTraining() {
+    isBasicInfoTrainingValid.value =
+        tcNoDokumen.text.isNotEmpty &&
+        tcTanggal.text.isNotEmpty &&
+        tcNamaRS.text.isNotEmpty &&
+        tcDivisi.text.isNotEmpty &&
+        tcAlamat.text.isNotEmpty &&
+        tcTelepon.text.isNotEmpty &&
+        tcTanggalPengajuanForm.text.isNotEmpty &&
+        tcBR.text.isNotEmpty &&
+        tcTechnicalSupp.text.isNotEmpty &&
+        tcTanggalPresentasi.text.isNotEmpty &&
+        tcOnlineOffline.text.isNotEmpty &&
+        tcPIC.text.isNotEmpty &&
+        tcMerk.text.isNotEmpty;
+  }
+
   void onPickDate(TextEditingController tc, Rxn<DateTime> dt) async {
     final data = await AppDialog.datePicker(
       firstDate: DateTime.now(),
@@ -169,7 +216,7 @@ class RequestController extends GetxController {
     }
   }
 
-  showItem({ItemM? data}) {
+  showItem({ItemM? data, String? nameColumn3}) {
     Get.bottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -177,7 +224,7 @@ class RequestController extends GetxController {
           topRight: Radius.circular(20),
         ),
       ),
-      ItemInfoBuilder(data: data),
+      ItemInfoBuilder(data: data, nameColumn3: nameColumn3),
       isScrollControlled: true,
     ).then((_) {
       clearBarang();
@@ -283,12 +330,20 @@ class RequestController extends GetxController {
         tcInvoice.text.isNotEmpty;
   }
 
-  void submitRequest() async {
-    final request = InstalasiFormM(
-      nextApproval: "",
+  void submitRequest(String type) async {
+    final request = RequestFormM(
+      namaBR: tcBR.text,
+      pic: tcPIC.text,
+      namaRS: tcNamaRS.text,
+      divisi: tcDivisi.text,
+      onlineOffline: tcOnlineOffline.text,
+      tanggalPresentasi:
+          dtTanggalPresentasi.value == null
+              ? null
+              : Timestamp.fromDate(dtTanggalPresentasi.value!),
       createdBy: profile.value?.username ?? "-",
       id: oldRequest.value != null ? oldRequest.value!.id : generateUuidV4(),
-      type: "INSTALASI/UJI ALAT",
+      type: type,
       noDokumen: tcNoDokumen.text,
       tanggal:
           dtTanggal.value == null ? null : Timestamp.fromDate(dtTanggal.value!),
@@ -329,13 +384,16 @@ class RequestController extends GetxController {
       accesories: accecories,
       approvals: oldRequest.value != null ? oldRequest.value!.approvals : [],
     );
-    final data = ApprovalM(
-      nama: _dC.profile.value!.username,
-      tanggal: Timestamp.now(),
-      status: "REVISED",
-      isFinalStatus: false,
-    );
-    request.approvals.add(data);
+    if (oldRequest.value != null) {
+      final data = ApprovalM(
+        nama: _dC.profile.value!.username,
+        tanggal: Timestamp.now(),
+        status: "REVISED",
+        isFinalStatus: false,
+        signature: "",
+      );
+      request.approvals.add(data);
+    }
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       await firestore

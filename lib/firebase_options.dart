@@ -47,28 +47,32 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCozwRAgTEdYB5vgbuxJO9wrdH2cfNZGIg',
-    appId: '1:140424544275:web:f0bab2bbeaf33fb64d3fe6',
-    messagingSenderId: '140424544275',
-    projectId: 'helthy-a2c57',
-    authDomain: 'helthy-a2c57.firebaseapp.com',
-    storageBucket: 'helthy-a2c57.firebasestorage.app',
+    apiKey: 'AIzaSyB12iAiEME70-zh9vTi_dxKD4EG3QAbiHQ',
+    appId: '1:974072583230:web:926054a6122f201de1ed6f',
+    messagingSenderId: '974072583230',
+    projectId: 'e-recruitment-59a9b',
+    authDomain: 'e-recruitment-59a9b.firebaseapp.com',
+    storageBucket: 'e-recruitment-59a9b.appspot.com',
+    measurementId: 'G-MCDLF6HDR1',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAObq5PzgV7jpWATMeXFV8fVxa-xqAd7JQ',
-    appId: '1:140424544275:android:7eba0b919358d13a4d3fe6',
-    messagingSenderId: '140424544275',
-    projectId: 'helthy-a2c57',
-    storageBucket: 'helthy-a2c57.firebasestorage.app',
+    apiKey: 'AIzaSyC0l-gVnjGXT7bACX1EzFk6yfec5RXuY-Y',
+    appId: '1:974072583230:android:e1aba982ffffa7e1e1ed6f',
+    messagingSenderId: '974072583230',
+    projectId: 'e-recruitment-59a9b',
+    storageBucket: 'e-recruitment-59a9b.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDYFHpft6nA-zw_BPa7c5toPOudXL37AUw',
-    appId: '1:140424544275:ios:189f41f1678a023a4d3fe6',
-    messagingSenderId: '140424544275',
-    projectId: 'helthy-a2c57',
-    storageBucket: 'helthy-a2c57.firebasestorage.app',
+    apiKey: 'AIzaSyBgrsXvOD9I6FrYvIwm7sjq7R2mTS98Rkc',
+    appId: '1:974072583230:ios:7f8893453b8d6080e1ed6f',
+    messagingSenderId: '974072583230',
+    projectId: 'e-recruitment-59a9b',
+    storageBucket: 'e-recruitment-59a9b.appspot.com',
+    androidClientId: '974072583230-io54v56dp1goh8jm0vro43m5ke4gthgq.apps.googleusercontent.com',
+    iosClientId: '974072583230-onln1bmskie7cssjhl1odh1bru994gpn.apps.googleusercontent.com',
     iosBundleId: 'com.helthy.app',
   );
+
 }

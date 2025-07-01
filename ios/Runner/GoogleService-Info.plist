@@ -2,18 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>974072583230-onln1bmskie7cssjhl1odh1bru994gpn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.974072583230-onln1bmskie7cssjhl1odh1bru994gpn</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>974072583230-io54v56dp1goh8jm0vro43m5ke4gthgq.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDYFHpft6nA-zw_BPa7c5toPOudXL37AUw</string>
+	<string>AIzaSyBgrsXvOD9I6FrYvIwm7sjq7R2mTS98Rkc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>140424544275</string>
+	<string>974072583230</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.helthy.app</string>
 	<key>PROJECT_ID</key>
-	<string>helthy-a2c57</string>
+	<string>e-recruitment-59a9b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>helthy-a2c57.firebasestorage.app</string>
+	<string>e-recruitment-59a9b.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:140424544275:ios:189f41f1678a023a4d3fe6</string>
+	<string>1:974072583230:ios:7f8893453b8d6080e1ed6f</string>
 </dict>
 </plist>

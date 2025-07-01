@@ -5,6 +5,7 @@ import 'package:helthy/controllers/profile_controller.dart';
 import 'package:helthy/extensions/app_extension.dart';
 import 'package:helthy/styles/color_styles.dart';
 import 'package:helthy/styles/text_styles.dart';
+import 'package:helthy/views/profile/signature_view.dart';
 import 'package:helthy/widgets/custom_container_shadow.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -97,6 +98,65 @@ class ProfileView extends GetView<ProfileController> {
                 ],
               ),
             ),
+            6.ph,
+            Divider(height: 1, color: ColorStyles.disableLight),
+            6.ph,
+            CustomContainerShadow(
+              borderRadius: 0,
+              onTap: () {
+                Get.to(SignatureView());
+              },
+              backgroundColor: Colors.transparent,
+              padding: EdgeInsets.symmetric(vertical: 14),
+              hideShadow: true,
+              child: Row(
+                children: [
+                  Icon(CupertinoIcons.person),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        "Signature",
+                        style: Calibri400.copyWith(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(Icons.arrow_forward_ios_rounded, size: 18),
+                ],
+              ),
+            ),
+            6.ph,
+            Divider(height: 1, color: ColorStyles.disableLight),
+            6.ph,
+            CustomContainerShadow(
+              borderRadius: 0,
+              onTap: () {
+                Get.toNamed("/change-password");
+              },
+              backgroundColor: Colors.transparent,
+              padding: EdgeInsets.symmetric(vertical: 14),
+              hideShadow: true,
+              child: Row(
+                children: [
+                  Icon(CupertinoIcons.person),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        "Change Password",
+                        style: Calibri400.copyWith(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(Icons.arrow_forward_ios_rounded, size: 18),
+                ],
+              ),
+            ),
+            6.ph,
             Divider(height: 1, color: ColorStyles.disableLight),
             6.ph,
 

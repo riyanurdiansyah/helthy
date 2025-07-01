@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helthy/models/approval_m.dart';
 import 'package:helthy/models/item_m.dart';
 
-class InstalasiFormM {
+class RequestFormM {
   String id;
   String type;
   String noDokumen;
   String createdBy;
-  String nextApproval;
   Timestamp? tanggal;
   int noRevisi;
   String namaLab;
@@ -28,18 +27,23 @@ class InstalasiFormM {
   Timestamp? tanggalTraining;
   String catatan;
   String praInstalasi;
-  Timestamp dtCreated;
-  Timestamp dtUpdated;
+  Timestamp? dtCreated;
+  Timestamp? dtUpdated;
   List<ItemM> items;
   List<ItemM> accesories;
   List<ApprovalM> approvals;
+  String namaRS;
+  String divisi;
+  String namaBR;
+  Timestamp? tanggalPresentasi;
+  String onlineOffline;
+  String pic;
 
-  InstalasiFormM({
+  RequestFormM({
     required this.id,
     required this.type,
     required this.noDokumen,
     required this.createdBy,
-    required this.nextApproval,
     required this.tanggal,
     required this.noRevisi,
     required this.namaLab,
@@ -65,11 +69,16 @@ class InstalasiFormM {
     required this.items,
     required this.accesories,
     required this.approvals,
+    required this.namaRS,
+    required this.namaBR,
+    required this.tanggalPresentasi,
+    required this.divisi,
+    required this.onlineOffline,
+    required this.pic,
   });
-  factory InstalasiFormM.fromJson(Map<String, dynamic> json) => InstalasiFormM(
+  factory RequestFormM.fromJson(Map<String, dynamic> json) => RequestFormM(
     id: json['id'] ?? '',
     type: json['type'] ?? '',
-    nextApproval: json['nextApproval'] ?? '',
     noDokumen: json['noDokumen'] ?? '',
     createdBy: json['createdBy'] ?? '',
     tanggal: json['tanggal'],
@@ -104,6 +113,12 @@ class InstalasiFormM {
             ?.map((e) => ApprovalM.fromJson(e))
             .toList() ??
         [],
+    namaRS: json["namaRS"] ?? "",
+    namaBR: json["namaBR"] ?? "",
+    divisi: json["divisi"] ?? "",
+    onlineOffline: json["onlineOffline"] ?? "",
+    tanggalPresentasi: json["tanggalPresentasi"],
+    pic: json["pic"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
@@ -136,5 +151,11 @@ class InstalasiFormM {
     'items': items.map((e) => e.toJson()).toList(),
     'accesories': accesories.map((e) => e.toJson()).toList(),
     'approvals': approvals.map((e) => e.toJson()).toList(),
+    'namaRS': namaRS,
+    'namaBR': namaBR,
+    'tanggalPresentasi': tanggalPresentasi,
+    'divisi': divisi,
+    'onlineOffline': onlineOffline,
+    'pic': pic,
   };
 }

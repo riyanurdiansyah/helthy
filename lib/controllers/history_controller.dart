@@ -14,7 +14,7 @@ import 'package:helthy/widgets/primary_button.dart';
 
 class HistoryController extends GetxController {
   final dC = Get.find<DashboardController>();
-  final RxList<InstalasiFormM> requests = <InstalasiFormM>[].obs;
+  final RxList<RequestFormM> requests = <RequestFormM>[].obs;
   final RxBool isLoading = true.obs;
   @override
   void onInit() async {
@@ -43,7 +43,7 @@ class HistoryController extends GetxController {
 
       requests.clear();
       requests.value =
-          response.docs.map((e) => InstalasiFormM.fromJson(e.data())).toList();
+          response.docs.map((e) => RequestFormM.fromJson(e.data())).toList();
     } catch (e) {
       AppDialog.showErrorMessage("Failed get dokumen $e");
     }
@@ -71,7 +71,7 @@ class HistoryController extends GetxController {
     );
   }
 
-  void reject(InstalasiFormM param) async {
+  void reject(RequestFormM param) async {
     Get.dialog(
       ConfirmationDialog(
         title: 'Reject',
@@ -129,7 +129,7 @@ class HistoryController extends GetxController {
     );
   }
 
-  void submitReject(InstalasiFormM param) async {
+  void submitReject(RequestFormM param) async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       String superior = "";
@@ -147,6 +147,7 @@ class HistoryController extends GetxController {
         tanggal: Timestamp.now(),
         status: "REJECTED",
         isFinalStatus: superior.isEmpty,
+        signature: "",
       );
       await firestore.collection('requests').doc(param.id).update({
         'nextApproval': param.createdBy,
