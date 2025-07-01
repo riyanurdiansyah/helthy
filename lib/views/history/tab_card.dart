@@ -161,6 +161,7 @@ class TabCard extends GetView<HistoryController> {
                 ),
               if (data.approvals.isNotEmpty &&
                   data.approvals.last.status != "REJECTED" &&
+                  data.approvals.last.status != "APPROVED" &&
                   data.approvals.last.status != "REVISED")
                 Row(
                   children: [
