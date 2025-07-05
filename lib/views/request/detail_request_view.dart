@@ -147,7 +147,6 @@ class DetailRequestView extends GetView<DashboardController> {
           },
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
-
         title: Text(
           'Detail Request',
           textAlign: TextAlign.center,
@@ -191,7 +190,6 @@ class DetailRequestView extends GetView<DashboardController> {
                     "-",
               ),
             ]),
-
             sectionBox("Informasi Umum", [
               infoRow("Tipe Pengajuan", data.type),
               // infoRow("ID", data.id),
@@ -200,9 +198,9 @@ class DetailRequestView extends GetView<DashboardController> {
               infoRow("Nama RS/Lab", data.namaRS),
               infoRow("Tanggal", formatDate(data.tanggal)),
               infoRow("PIC", data.pic),
-              infoRow("Nama Lab", data.namaLab),
+              infoRow("Nama RS/Lab", data.namaRS),
               infoRow("Divisi RS Yang Meminta", data.divisi),
-              infoRow("PIC", data.namaLab),
+              infoRow("PIC", data.pic),
               infoRow("Alamat", data.alamat),
               infoRow("Telepon", data.noTelepon),
               infoRow("Alat", data.alat),
@@ -210,7 +208,6 @@ class DetailRequestView extends GetView<DashboardController> {
               infoRow("Serial", data.serialNumber),
               infoRow("No Invoice", data.noInvoice),
             ]),
-
             sectionBox("Penanggung Jawab", [
               infoRow("Kepala Lab", data.namaKepalaLab),
               infoRow("PJ Alat", data.penanggungJawabAlat),
@@ -218,7 +215,6 @@ class DetailRequestView extends GetView<DashboardController> {
               infoRow("Tech Support", data.technicalSupport),
               infoRow("Engineer", data.fieldServiceEngineer),
             ]),
-
             sectionBox("Tanggal", [
               infoRow("Pengajuan", formatDate(data.tanggalPengajuan)),
               infoRow(
@@ -230,13 +226,11 @@ class DetailRequestView extends GetView<DashboardController> {
               infoRow("Dibuat", formatDate(data.dtCreated)),
               infoRow("Diupdate", formatDate(data.dtUpdated)),
             ]),
-
             if (data.catatan.isNotEmpty && data.praInstalasi.isNotEmpty)
               sectionBox("Catatan", [
                 infoRow("Catatan", data.catatan),
                 infoRow("Pra-Instalasi", data.praInstalasi),
               ]),
-
             sectionBox("Items", [
               ...data.items.map(
                 (item) => listItem(
@@ -267,10 +261,9 @@ class DetailRequestView extends GetView<DashboardController> {
                     a.status == "REJECTED"
                         ? Icons.highlight_remove_rounded
                         : Icons.check_circle_rounded,
-                    iconColor:
-                        a.status == "REJECTED"
-                            ? ColorStyles.danger
-                            : Colors.green,
+                    iconColor: a.status == "REJECTED"
+                        ? ColorStyles.danger
+                        : Colors.green,
                   ),
                 ),
               ]),

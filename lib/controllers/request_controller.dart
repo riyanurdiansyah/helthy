@@ -37,7 +37,6 @@ class RequestController extends GetxController {
   final tcKepalaLab = TextEditingController();
   final tcDivisi = TextEditingController();
   final tcPenanggungJawab = TextEditingController();
-  final tcBR = TextEditingController();
   final tcAlat = TextEditingController();
   final tcTanggalPengajuanForm = TextEditingController();
   final tcMerk = TextEditingController();
@@ -118,13 +117,19 @@ class RequestController extends GetxController {
       tcMerk,
       tcSerialNumber,
       tcInvoice,
-      tcBR,
+      tcBusinessRepresentative,
       tcTechnicalSupp,
       tcOnlineOffline,
       tcDivisi,
       tcNamaRS,
       tcTanggalPresentasi,
       tcPIC,
+      tcTechnicalSupp,
+      tcFieldServiceEngineer,
+      tcTechnicalSupp,
+      tcTanggalPermintaanPemasangan,
+      tcTanggalPemasangan,
+      tcTanggalTraining,
     ];
 
     for (var c in controllers) {
@@ -151,6 +156,10 @@ class RequestController extends GetxController {
     tcMerk.text = data.merk;
     tcSerialNumber.text = data.serialNumber;
     tcInvoice.text = data.noInvoice;
+    tcNamaRS.text = data.namaRS;
+    tcBusinessRepresentative.text = data.businessRepresentivePerson;
+    tcTechnicalSupp.text = data.technicalSupport;
+    tcFieldServiceEngineer.text = data.fieldServiceEngineer;
 
     tcTanggal.text = oldRequest.value?.tanggal == null
         ? ""
@@ -161,6 +170,24 @@ class RequestController extends GetxController {
         ? ""
         : DateFormat("dd MMM yyyy").format(data.tanggalPengajuan!.toDate());
     dtTanggalPengajuanForm.value = oldRequest.value?.tanggalPengajuan?.toDate();
+
+    tcTanggalPermintaanPemasangan.text =
+        oldRequest.value?.tanggalPermintaanPemasangan == null
+            ? ""
+            : DateFormat("dd MMM yyyy")
+                .format(data.tanggalPermintaanPemasangan!.toDate());
+    dtTanggalPermintaanPemasangan.value =
+        oldRequest.value?.tanggalPermintaanPemasangan?.toDate();
+
+    tcTanggalPemasangan.text = oldRequest.value?.tanggalPemasangan == null
+        ? ""
+        : DateFormat("dd MMM yyyy").format(data.tanggalPemasangan!.toDate());
+    dtTanggalPemasangan.value = oldRequest.value?.tanggalPemasangan?.toDate();
+
+    tcTanggalTraining.text = oldRequest.value?.tanggalTraining == null
+        ? ""
+        : DateFormat("dd MMM yyyy").format(data.tanggalTraining!.toDate());
+    dtTanggalTraining.value = oldRequest.value?.tanggalTraining?.toDate();
 
     items.value = data.items;
     accecories.value = data.accesories;
@@ -182,6 +209,11 @@ class RequestController extends GetxController {
         tcAlat.text.isNotEmpty &&
         tcMerk.text.isNotEmpty &&
         tcSerialNumber.text.isNotEmpty &&
+        tcBusinessRepresentative.text.isNotEmpty &&
+        tcTechnicalSupp.text.isNotEmpty &&
+        tcFieldServiceEngineer.text.isNotEmpty &&
+        tcTanggalPemasangan.text.isNotEmpty &&
+        tcTanggalTraining.text.isNotEmpty &&
         tcInvoice.text.isNotEmpty;
   }
 
@@ -193,7 +225,7 @@ class RequestController extends GetxController {
         tcAlamat.text.isNotEmpty &&
         tcTelepon.text.isNotEmpty &&
         tcTanggalPengajuanForm.text.isNotEmpty &&
-        tcBR.text.isNotEmpty &&
+        tcBusinessRepresentative.text.isNotEmpty &&
         tcTechnicalSupp.text.isNotEmpty &&
         tcTanggalPresentasi.text.isNotEmpty &&
         tcOnlineOffline.text.isNotEmpty &&
@@ -333,7 +365,6 @@ class RequestController extends GetxController {
 
   void submitRequest(String type) async {
     final request = RequestFormM(
-      namaBR: tcBR.text,
       pic: tcPIC.text,
       namaRS: tcNamaRS.text,
       divisi: tcDivisi.text,
@@ -348,7 +379,6 @@ class RequestController extends GetxController {
       tanggal:
           dtTanggal.value == null ? null : Timestamp.fromDate(dtTanggal.value!),
       noRevisi: int.tryParse(tcRevisi.text) ?? 0,
-      namaLab: "",
       tanggalPengajuan: dtTanggalPengajuanForm.value == null
           ? null
           : Timestamp.fromDate(dtTanggalPengajuanForm.value!),

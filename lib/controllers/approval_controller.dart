@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -47,12 +48,11 @@ class ApprovalController extends GetxController {
         requests.clear();
         return;
       }
-
-      final response =
-          await firestore
-              .collection("requests")
-              .where("createdBy", whereIn: usernames)
-              .get();
+      log("CEK USER : $usernames");
+      final response = await firestore
+          .collection("requests")
+          .where("createdBy", whereIn: usernames)
+          .get();
 
       requests.clear();
       final allRequests =
@@ -61,37 +61,37 @@ class ApprovalController extends GetxController {
       // final currentUsername = _dC.profile.value?.username ?? "";
       final currentUserID = _dC.profile.value?.id ?? "";
 
-      requests.value =
-          allRequests.where((e) {
-            final approvals = e.approvals;
+      requests.value = allRequests.where((e) {
+        final approvals = e.approvals;
 
-            // 1. approvals kosong → ambil
-            if (approvals.isEmpty) {
-              final userRequestor = _dC.users.firstWhereOrNull(
-                (x) => x.username == e.createdBy,
-              );
-              if (userRequestor == null) return false;
-              return userRequestor.directSuperior == currentUserID;
-            }
+        // 1. approvals kosong → ambil
+        if (approvals.isEmpty) {
+          final userRequestor = _dC.users.firstWhereOrNull(
+            (x) => x.username == e.createdBy,
+          );
+          if (userRequestor == null) return false;
+          return userRequestor.directSuperior == currentUserID;
+        }
 
-            final lastApproval = approvals.last;
+        final lastApproval = approvals.last;
 
-            // 2. Jika REJECTED → buang
-            if (lastApproval.status == "REJECTED") return false;
+        // 2. Jika REJECTED → buang
+        if (lastApproval.status == "REJECTED") return false;
 
-            // 3. Jika final status → buang
-            if (lastApproval.isFinalStatus) return false;
+        // 3. Jika final status → buang
+        if (lastApproval.isFinalStatus) return false;
 
-            // 4. Cek apakah directSuperior cocok
-            final lastUsername = lastApproval.nama;
-            final user = _dC.users.firstWhereOrNull(
-              (u) => u.username == lastUsername,
-            );
+        // 4. Cek apakah directSuperior cocok
+        final lastUsername = lastApproval.nama;
+        final user = _dC.users.firstWhereOrNull(
+          (u) => u.username == lastUsername,
+        );
+        log("CEK USERNAME : $currentUserID");
 
-            if (user == null) return false;
+        if (user == null) return false;
 
-            return user.directSuperior == currentUserID;
-          }).toList();
+        return user.directSuperior == currentUserID;
+      }).toList();
     } catch (e) {
       AppDialog.showErrorMessage("Failed get dokumen $e");
     }
@@ -253,31 +253,39 @@ class ApprovalController extends GetxController {
 
   Future<void> submitDocument(RequestFormM request, String status) async {
     try {
-      String downloadUrl = "";
       final profile = _dC.profile.value;
       final username = profile?.username ?? '-';
+
+      updateSignature.value = (profile?.signature ?? "").isEmpty;
       final uid = FirebaseAuth.instance.currentUser?.uid;
+
       if (uid == null || profile == null) throw Exception('User belum login');
 
       final superior = _dC.getDirectSuperior(username);
       final isFinal = superior != null && superior.directSuperior.isEmpty;
 
       final timestamp = Timestamp.now();
+      String downloadUrl = "";
 
-      // Upload signature dulu jika ada
-      final rawBytes = await signatureController.toPngBytes();
-      if (rawBytes == null) throw Exception('Gagal konversi tanda tangan');
+      // === HANDLE SIGNATURE ===
+      if (status != "REJECTED") {
+        final rawBytes = await signatureController.toPngBytes();
+        if (rawBytes == null) throw Exception('Gagal konversi tanda tangan');
 
-      if (updateSignature.value) {
-        final ref = FirebaseStorage.instance.ref().child(
-          'signatures/${generateUuidV4()}.png',
-        );
-        final uploadTask = await ref.putData(rawBytes);
+        if (updateSignature.value) {
+          final fileName = 'signatures/${generateUuidV4()}.png';
+          final ref = FirebaseStorage.instance.ref().child(fileName);
 
-        downloadUrl = await uploadTask.ref.getDownloadURL();
-      } else {
-        downloadUrl = _dC.profile.value?.signature ?? "";
+          final uploadTask = await ref.putData(rawBytes);
+          downloadUrl = await uploadTask.ref.getDownloadURL();
+        } else {
+          if (downloadUrl.isEmpty) {
+            throw Exception("Tanda tangan belum tersedia");
+          }
+        }
       }
+
+      // === PREPARE APPROVAL DATA ===
       final approvalData = ApprovalM(
         nama: username,
         tanggal: timestamp,
@@ -286,36 +294,31 @@ class ApprovalController extends GetxController {
         signature: downloadUrl,
       );
 
-      final docRef = FirebaseFirestore.instance
-          .collection('requests')
-          .doc(request.id);
-
+      final docRef =
+          FirebaseFirestore.instance.collection('requests').doc(request.id);
       final usersRef = FirebaseFirestore.instance.collection('users').doc(uid);
 
-      // Gunakan transaction untuk update Firestore
+      // === FIRESTORE TRANSACTION ===
       await FirebaseFirestore.instance.runTransaction((transaction) async {
         final snapshot = await transaction.get(docRef);
-
-        if (!snapshot.exists) {
-          throw Exception("Request document not found");
-        }
+        if (!snapshot.exists) throw Exception("Request document not found");
 
         final currentApprovals =
             snapshot.get('approvals') as List<dynamic>? ?? [];
-
-        // Tambahkan approval baru ke list approvals
         currentApprovals.add(approvalData.toJson());
 
         transaction.update(docRef, {'approvals': currentApprovals});
         transaction.update(usersRef, {'signature': downloadUrl});
       });
 
-      // Jika sampai sini berarti sukses
+      // === POST-SUCCESS ===
       Get.back();
       getRequests();
+
       if (updateSignature.value) {
-        await _dC.getProfile();
+        await _dC.getProfile(); // Refresh local signature
       }
+
       AppDialog.showSuccessMessage("Document is $status");
     } catch (e) {
       AppDialog.showErrorMessage("Failed Approve: $e");
@@ -339,8 +342,8 @@ class ApprovalController extends GetxController {
       }
 
       final ref = FirebaseStorage.instance.ref().child(
-        'signatures/${generateUuidV4()}.png',
-      );
+            'signatures/${generateUuidV4()}.png',
+          );
       final uploadTask = await ref.putData(compressedBytes);
 
       final downloadUrl = await uploadTask.ref.getDownloadURL();

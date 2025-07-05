@@ -40,11 +40,10 @@ class BasicInfoTrainingRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          onTap:
-              () => controller.onPickDate(
-                controller.tcTanggal,
-                controller.dtTanggal,
-              ),
+          onTap: () => controller.onPickDate(
+            controller.tcTanggal,
+            controller.dtTanggal,
+          ),
           labelText: 'Tanggal Dokumen',
           isRequired: true,
           readOnly: true,
@@ -121,7 +120,7 @@ class BasicInfoTrainingRequest extends GetView<RequestController> {
           labelText: 'Business Representative Person',
           isRequired: true,
           textInputAction: TextInputAction.next,
-          controller: controller.tcBR,
+          controller: controller.tcBusinessRepresentative,
         ),
         14.ph,
         FilledPrimaryTextfield(
@@ -129,11 +128,10 @@ class BasicInfoTrainingRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          onTap:
-              () => controller.onPickDate(
-                controller.tcTanggalPengajuanForm,
-                controller.dtTanggalPengajuanForm,
-              ),
+          onTap: () => controller.onPickDate(
+            controller.tcTanggalPengajuanForm,
+            controller.dtTanggalPengajuanForm,
+          ),
           labelText: 'Tanggal Pengajuan Form',
           isRequired: true,
           readOnly: true,
@@ -157,11 +155,10 @@ class BasicInfoTrainingRequest extends GetView<RequestController> {
             fontSize: 18,
             color: ColorStyles.disableBold,
           ),
-          onTap:
-              () => controller.onPickDate(
-                controller.tcTanggalPresentasi,
-                controller.dtTanggalPresentasi,
-              ),
+          onTap: () => controller.onPickDate(
+            controller.tcTanggalPresentasi,
+            controller.dtTanggalPresentasi,
+          ),
           labelText: 'Tanggal Presentasi',
           isRequired: true,
           readOnly: true,
@@ -178,7 +175,6 @@ class BasicInfoTrainingRequest extends GetView<RequestController> {
           textInputAction: TextInputAction.next,
           controller: controller.tcOnlineOffline,
         ),
-
         14.ph,
         FilledPrimaryTextfield(
           style: Calibri400.copyWith(
