@@ -58,13 +58,11 @@ class AccesoriesInfoRequest extends GetView<RequestController> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ItemCard(
                   data: controller.accecories[i],
-                  onDetail:
-                      () => controller.showAccesory(
-                        data: controller.accecories[i],
-                      ),
-                  onDelete:
-                      () =>
-                          controller.doDeleteItem(controller.accecories[i].id),
+                  onDetail: () => controller.showAccesory(
+                    data: controller.accecories[i],
+                  ),
+                  onDelete: () =>
+                      controller.doDeleteAcc(controller.accecories[i].id),
                 ),
               );
             }),

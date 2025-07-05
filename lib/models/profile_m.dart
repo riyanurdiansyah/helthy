@@ -4,11 +4,11 @@ class ProfileM {
   final String directSuperior;
   final String username;
   final String email;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
   final String fullname;
   final String id;
-  final bool active;
+  final bool status;
   final String role;
   final String signature;
 
@@ -20,7 +20,7 @@ class ProfileM {
     required this.updatedAt,
     required this.fullname,
     required this.id,
-    required this.active,
+    required this.status,
     required this.role,
     required this.signature,
   });
@@ -35,17 +35,17 @@ class ProfileM {
           json['createdAt'] == null
               ? null
               : json['createdAt'].runtimeType == Timestamp
-              ? (json['createdAt'] as Timestamp).toDate()
-              : DateTime.parse(json['createdAt']),
+              ? (json['createdAt'] as Timestamp).toDate().toIso8601String()
+              : DateTime.parse(json['createdAt']).toIso8601String(),
       updatedAt:
           json['updatedAt'] == null
               ? null
               : json['updatedAt'].runtimeType == Timestamp
-              ? (json['updatedAt'] as Timestamp).toDate()
-              : DateTime.parse(json['updatedAt']),
+              ? (json['updatedAt'] as Timestamp).toDate().toIso8601String()
+              : DateTime.parse(json['updatedAt']).toIso8601String(),
       fullname: json['fullname'] ?? '',
       id: json['id'] ?? '',
-      active: json['active'] ?? false,
+      status: json['status'] == "active" ? true : false,
       role: json['role'] ?? '',
     );
   }
@@ -55,11 +55,11 @@ class ProfileM {
       'directSuperior': directSuperior,
       'username': username,
       'email': email,
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
       'fullname': fullname,
       'id': id,
-      'active': active,
+      'status': status,
       'role': role,
       'signature': signature,
     };

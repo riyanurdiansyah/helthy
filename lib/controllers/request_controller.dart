@@ -152,16 +152,14 @@ class RequestController extends GetxController {
     tcSerialNumber.text = data.serialNumber;
     tcInvoice.text = data.noInvoice;
 
-    tcTanggal.text =
-        oldRequest.value?.tanggal == null
-            ? ""
-            : DateFormat("dd MMM yyyy").format(data.tanggal!.toDate());
+    tcTanggal.text = oldRequest.value?.tanggal == null
+        ? ""
+        : DateFormat("dd MMM yyyy").format(data.tanggal!.toDate());
     dtTanggal.value = oldRequest.value?.tanggal?.toDate();
 
-    tcTanggalPengajuanForm.text =
-        oldRequest.value?.tanggalPengajuan == null
-            ? ""
-            : DateFormat("dd MMM yyyy").format(data.tanggalPengajuan!.toDate());
+    tcTanggalPengajuanForm.text = oldRequest.value?.tanggalPengajuan == null
+        ? ""
+        : DateFormat("dd MMM yyyy").format(data.tanggalPengajuan!.toDate());
     dtTanggalPengajuanForm.value = oldRequest.value?.tanggalPengajuan?.toDate();
 
     items.value = data.items;
@@ -174,8 +172,7 @@ class RequestController extends GetxController {
   }
 
   void validateBasicInfo() {
-    isBasicInfoValid.value =
-        tcNoDokumen.text.isNotEmpty &&
+    isBasicInfoValid.value = tcNoDokumen.text.isNotEmpty &&
         tcTanggal.text.isNotEmpty &&
         tcAlamat.text.isNotEmpty &&
         tcTelepon.text.isNotEmpty &&
@@ -189,8 +186,7 @@ class RequestController extends GetxController {
   }
 
   void validateBasicInfoTraining() {
-    isBasicInfoTrainingValid.value =
-        tcNoDokumen.text.isNotEmpty &&
+    isBasicInfoTrainingValid.value = tcNoDokumen.text.isNotEmpty &&
         tcTanggal.text.isNotEmpty &&
         tcNamaRS.text.isNotEmpty &&
         tcDivisi.text.isNotEmpty &&
@@ -316,6 +312,11 @@ class RequestController extends GetxController {
     items.removeWhere((e) => e.id == id);
   }
 
+  void doDeleteAcc(String id) {
+    Get.back();
+    accecories.removeWhere((e) => e.id == id);
+  }
+
   bool isBasicInfoComplete() {
     return tcNoDokumen.text.isNotEmpty &&
         tcTanggal.text.isNotEmpty &&
@@ -337,10 +338,9 @@ class RequestController extends GetxController {
       namaRS: tcNamaRS.text,
       divisi: tcDivisi.text,
       onlineOffline: tcOnlineOffline.text,
-      tanggalPresentasi:
-          dtTanggalPresentasi.value == null
-              ? null
-              : Timestamp.fromDate(dtTanggalPresentasi.value!),
+      tanggalPresentasi: dtTanggalPresentasi.value == null
+          ? null
+          : Timestamp.fromDate(dtTanggalPresentasi.value!),
       createdBy: profile.value?.username ?? "-",
       id: oldRequest.value != null ? oldRequest.value!.id : generateUuidV4(),
       type: type,
@@ -349,10 +349,9 @@ class RequestController extends GetxController {
           dtTanggal.value == null ? null : Timestamp.fromDate(dtTanggal.value!),
       noRevisi: int.tryParse(tcRevisi.text) ?? 0,
       namaLab: "",
-      tanggalPengajuan:
-          dtTanggalPengajuanForm.value == null
-              ? null
-              : Timestamp.fromDate(dtTanggalPengajuanForm.value!),
+      tanggalPengajuan: dtTanggalPengajuanForm.value == null
+          ? null
+          : Timestamp.fromDate(dtTanggalPengajuanForm.value!),
       alamat: tcAlamat.text,
       alat: tcAlat.text,
       noTelepon: tcTelepon.text,
@@ -364,18 +363,15 @@ class RequestController extends GetxController {
       businessRepresentivePerson: tcBusinessRepresentative.text,
       technicalSupport: tcTechnicalSupp.text,
       fieldServiceEngineer: tcFieldServiceEngineer.text,
-      tanggalPermintaanPemasangan:
-          dtTanggalPermintaanPemasangan.value == null
-              ? null
-              : Timestamp.fromDate(dtTanggalPermintaanPemasangan.value!),
-      tanggalPemasangan:
-          dtTanggalPemasangan.value == null
-              ? null
-              : Timestamp.fromDate(dtTanggalPemasangan.value!),
-      tanggalTraining:
-          dtTanggalTraining.value == null
-              ? null
-              : Timestamp.fromDate(dtTanggalTraining.value!),
+      tanggalPermintaanPemasangan: dtTanggalPermintaanPemasangan.value == null
+          ? null
+          : Timestamp.fromDate(dtTanggalPermintaanPemasangan.value!),
+      tanggalPemasangan: dtTanggalPemasangan.value == null
+          ? null
+          : Timestamp.fromDate(dtTanggalPemasangan.value!),
+      tanggalTraining: dtTanggalTraining.value == null
+          ? null
+          : Timestamp.fromDate(dtTanggalTraining.value!),
       catatan: "",
       praInstalasi: tcPraInstalasi.text,
       dtCreated: Timestamp.now(),

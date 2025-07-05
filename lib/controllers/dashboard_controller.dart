@@ -57,12 +57,11 @@ class DashboardController extends GetxController {
   Future getProfileOnline() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final userQuery =
-        await firestore
-            .collection("users")
-            .where("id", isEqualTo: uid)
-            .limit(1)
-            .get();
+    final userQuery = await firestore
+        .collection("users")
+        .where("id", isEqualTo: uid)
+        .limit(1)
+        .get();
 
     if (userQuery.docs.isEmpty) {
       AppDialog.showErrorMessage("Username tidak ditemukan");
@@ -141,8 +140,8 @@ class DashboardController extends GetxController {
 
       // Langsung upload tanpa kompres
       final ref = FirebaseStorage.instance.ref().child(
-        'signatures/${profile.value?.id}.png',
-      );
+            'signatures/${profile.value?.id}.png',
+          );
       final uploadTask = await ref.putData(rawBytes);
 
       final downloadUrl = await uploadTask.ref.getDownloadURL();

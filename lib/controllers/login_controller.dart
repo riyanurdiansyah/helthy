@@ -107,7 +107,7 @@ class LoginController extends GetxController {
       return;
     }
 
-    final username = usernameController.text.trim();
+    final username = usernameController.text;
     final password = passwordController.text;
 
     if (username.isEmpty || !validatePassword(password)) {
